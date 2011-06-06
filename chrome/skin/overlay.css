@@ -1,0 +1,22 @@
+/* This is just an example.  You shouldn't do this. */
+#simplyPinned-hello
+{
+  color: red ! important;
+}
+#simplyPinned-toolbar-button
+{
+  list-style-image: url("chrome://simplyPinned/skin/toolbar-button.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+}
+#simplyPinned-toolbar-button:hover
+{
+  -moz-image-region: rect(24px 24px 48px  0px);
+}
+[iconsize="small"] #simplyPinned-toolbar-button
+{
+  -moz-image-region: rect( 0px 40px 16px 24px);
+}
+[iconsize="small"] #simplyPinned-toolbar-button:hover
+{
+  -moz-image-region: rect(24px 40px 40px 24px);
+}

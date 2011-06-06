@@ -1,0 +1,8 @@
+<!ENTITY simplyPinned.label "Your localized menuitem">
+<!ENTITY simplyPinnedContext.label "Your Menuitem">
+<!ENTITY simplyPinnedContext.accesskey "Y">
+<!ENTITY simplyPinnedToolbarButton.label "Your Toolbar Button">
+<!ENTITY simplyPinnedToolbarButton.tooltip "This is your toolbar button!">
+<!ENTITY simplyPinnedSidebar.label "Your Sidebar">
+<!ENTITY simplyPinnedToolbar.name  "example">
+<!ENTITY simplyPinnedToolbar.label "This is an example toolbar. You can hide it under View &gt; toolbars &gt; &simplyPinnedToolbar.name;">

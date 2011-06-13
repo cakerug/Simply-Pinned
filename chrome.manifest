@@ -1,4 +1,3 @@
-content   simplyPinned                 chrome/content/
-locale    simplyPinned   en-US         chrome/locale/en-US/
+content   simplypinned                 chrome/content/
 
-overlay   chrome://browser/content/browser.xul   chrome://simplyPinned/content/ff-overlay.xul
+overlay   chrome://browser/content/browser.xul   chrome://simplypinned/content/ff-overlay.xul

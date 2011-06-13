@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE overlay SYSTEM "chrome://simplyPinned/locale/overlay.dtd">
-<overlay id="simplyPinned-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="simplyPinned-strings" src="chrome://simplyPinned/locale/overlay.properties"/>
-  </stringbundleset>
-
+<overlay id="simplypinned-browser-overlay"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript"
+        src="chrome://simplypinned/content/ff-overlay.js" />
 </overlay>

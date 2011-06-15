@@ -1,16 +1,19 @@
 let simplyPinnedChrome =
 {
+    elementIds : new Array("PersonalToolbar", "nav-bar"),
+    
     /**
      * Sets the visibility of toolbars
      * @param Boolean show True shows the toolbars, false hides.
+     * @param Array elementIds An array of strings that represent the ids
+     *   of elements to be hidden/shown
      */
-    setToolbarVisibility : function(show)
+    setVisibility : function(show, elementIds)
     {
-        var toolbars = new Array("PersonalToolbar", "nav-bar")
         for(var i = 0; i < toolbars.length; i++)
         {
-            document.getElementById(toolbars[i])
-                .style.display = show ? 'inherit' : 'none';
+            document.getElementById(elementIds[i]).style.display =
+                show ? 'inherit' : 'none';
         }
     },
     
@@ -22,7 +25,8 @@ let simplyPinnedChrome =
         container.addEventListener("TabSelect",
             function(event)
             {
-                simplyPinnedChrome.setToolbarVisibility(!event.target.pinned);
+                simplyPinnedChrome.setVisibility(!event.target.pinned,
+                    simplyPinnedChrome.elementIds);
             },
             false);
         
@@ -31,7 +35,10 @@ let simplyPinnedChrome =
             function(event)
             {
                 if(event.target.selected)
-                    simplyPinnedChrome.setToolbarVisibility(false);
+                {
+                    simplyPinnedChrome.setVisibility(false,
+                        simplyPinnedChrome.elementIds);
+                }
             },
             false);
         
@@ -40,7 +47,8 @@ let simplyPinnedChrome =
             function(event)
             {
                 if(event.target.selected)
-                    simplyPinnedChrome.setToolbarVisibility(true);
+                    simplyPinnedChrome.setVisibility(true,
+                        simplyPinnedChrome.elementIds);
             },
             false);
     }

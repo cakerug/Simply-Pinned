@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://simplypinned/locale/options.dtd">
+<prefwindow id="simplypinned-preferences"
+    title="&prefwindow.title;"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <prefpane id="prefpane">
+        <description>&prefs.desc;</description>
+        <preferences>
+            <preference id="prefboolnav"
+                name="extensions.simplypinned.boolnav"
+                type="bool"/>
+            <preference id="prefboolbookmarks"
+                name="extensions.simplypinned.boolbookmarks"
+                type="bool"/>
+        </preferences>
+        <checkbox id="chknav" preference="prefboolnav"
+            label="&chknav.label;"/>
+        <checkbox id="chkbookmarks" preference="prefboolbookmarks"
+            label="&chkbookmarks.label;"/>
+    </prefpane>
+</prefwindow>

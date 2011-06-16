@@ -1,19 +1,32 @@
 let simplyPinnedChrome =
 {
-    elementIds : new Array("PersonalToolbar", "nav-bar"),
-    
+    prefs : Components.classes["@mozilla.org/preferences-service;1"]
+                            .getService(Components.interfaces.nsIPrefService)
+                            .getBranch("extensions.simplypinned."),
+    elementIds : new Array("nav-bar", "PersonalToolbar"),
+    assocPrefNames : new Array("boolnav", "boolbookmarks"),
+
     /**
-     * Sets the visibility of toolbars
+     * Sets the visibility of elements
      * @param Boolean show True shows the toolbars, false hides.
-     * @param Array elementIds An array of strings that represent the ids
      *   of elements to be hidden/shown
      */
-    setVisibility : function(show, elementIds)
+    setVisibility : function(show)
     {
-        for(var i = 0; i < toolbars.length; i++)
+        for(var i = 0; i < simplyPinnedChrome.elementIds.length; i++)
         {
-            document.getElementById(elementIds[i]).style.display =
-                show ? 'inherit' : 'none';
+            if(simplyPinnedChrome.prefs
+                .getBoolPref(simplyPinnedChrome.assocPrefNames[i]))
+            {
+                document.getElementById(simplyPinnedChrome.elementIds[i])
+                    .style.display = "inherit";
+            }
+            else
+            {
+                document.getElementById(simplyPinnedChrome.elementIds[i])
+                    .style.display =
+                        show ? "inherit" : "none";
+            }
         }
     },
     
@@ -25,8 +38,7 @@ let simplyPinnedChrome =
         container.addEventListener("TabSelect",
             function(event)
             {
-                simplyPinnedChrome.setVisibility(!event.target.pinned,
-                    simplyPinnedChrome.elementIds);
+                simplyPinnedChrome.setVisibility(!event.target.pinned);
             },
             false);
         
@@ -36,8 +48,7 @@ let simplyPinnedChrome =
             {
                 if(event.target.selected)
                 {
-                    simplyPinnedChrome.setVisibility(false,
-                        simplyPinnedChrome.elementIds);
+                    simplyPinnedChrome.setVisibility(false);
                 }
             },
             false);
@@ -47,8 +58,7 @@ let simplyPinnedChrome =
             function(event)
             {
                 if(event.target.selected)
-                    simplyPinnedChrome.setVisibility(true,
-                        simplyPinnedChrome.elementIds);
+                    simplyPinnedChrome.setVisibility(true);
             },
             false);
     }

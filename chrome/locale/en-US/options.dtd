@@ -1,0 +1,4 @@
+<!ENTITY prefwindow.title "Simply Pinned Preferences">
+<!ENTITY prefs.desc "Show the following elements for pinned tabs:">
+<!ENTITY chknav.label "Navigation Toolbar">
+<!ENTITY chkbookmarks.label "Bookmarks Toolbar">

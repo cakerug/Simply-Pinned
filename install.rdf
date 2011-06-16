@@ -11,6 +11,7 @@
       Removes the URL and bookmarks toolbars on pinned tabs.
     </em:description>
     <em:homepageURL>https://github.com/cakerug/Simply-Pinned</em:homepageURL>
+    <em:optionsURL>chrome://simplypinned/content/options.xul</em:optionsURL>
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>

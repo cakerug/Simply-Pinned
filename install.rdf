@@ -8,7 +8,7 @@
     <em:version>0.1</em:version>
     <em:creator>Grace Ku</em:creator>
     <em:description>
-      Removes the URL and bookmarks toolbars on pinned tabs.
+      Removes unneeded toolbars on pinned tabs.
     </em:description>
     <em:homepageURL>https://github.com/cakerug/Simply-Pinned</em:homepageURL>
     <em:optionsURL>chrome://simplypinned/content/options.xul</em:optionsURL>
@@ -16,7 +16,7 @@
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>4.0.*</em:maxVersion>
+        <em:maxVersion>5.*</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>

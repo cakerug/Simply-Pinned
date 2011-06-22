@@ -1,4 +1,6 @@
-<!ENTITY prefwindow.title "Simply Pinned Preferences">
-<!ENTITY prefs.desc "Show the following elements for pinned tabs:">
-<!ENTITY chknav.label "Navigation Toolbar">
-<!ENTITY chkbookmarks.label "Bookmarks Toolbar">
+<!ENTITY prefwindow.title           "Simply Pinned Preferences">
+<!ENTITY prefs.desc                 "Show the following elements for pinned tabs:">
+<!ENTITY chk_nav-bar.label          "Navigation Toolbar">
+<!ENTITY chk_PersonalToolbar.label  "Bookmarks Toolbar">
+<!ENTITY chk_addon-bar.label        "Add-on Bar">
+<!ENTITY chk_otherToolbars.label    "Other Toolbars:">

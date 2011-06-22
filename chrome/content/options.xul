@@ -4,19 +4,27 @@
 <prefwindow id="simplypinned-preferences"
     title="&prefwindow.title;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <prefpane id="prefpane">
-        <description>&prefs.desc;</description>
+    <script type="application/x-javascript"
+        src="chrome://simplypinned/content/options.js" />
+    <prefpane id="optionsPane">
         <preferences>
-            <preference id="prefboolnav"
-                name="extensions.simplypinned.boolnav"
-                type="bool"/>
-            <preference id="prefboolbookmarks"
-                name="extensions.simplypinned.boolbookmarks"
-                type="bool"/>
+            <preference type="bool" id="boolpref_nav-bar"
+                name="extensions.simplypinned.bool_nav-bar" />
+            <preference type="bool" id="boolpref_PersonalToolbar"
+                name="extensions.simplypinned.bool_PersonalToolbar" />
+            <preference type="bool" id="boolpref_addon-bar"
+                name="extensions.simplypinned.bool_addon-bar" />
+            <preference type="bool" id="boolpref_otherToolbars"
+                name="extensions.simplypinned.bool_otherToolbars" />
         </preferences>
-        <checkbox id="chknav" preference="prefboolnav"
-            label="&chknav.label;"/>
-        <checkbox id="chkbookmarks" preference="prefboolbookmarks"
-            label="&chkbookmarks.label;"/>
+        <description id="descPrefs">&prefs.desc;</description>
+        <checkbox id="chk_nav-bar" label="&chk_nav-bar.label;"
+            preference="boolpref_nav-bar"/>
+        <checkbox id="chk_PersonalToolbar" label="&chk_PersonalToolbar.label;"
+            preference="boolpref_PersonalToolbar"/>
+        <checkbox id="chk_addon-bar" label="&chk_addon-bar.label;"
+            preference="boolpref_addon-bar"/>
+        <checkbox id="chk_otherToolbars" label="&chk_otherToolbars.label;"
+            preference="boolpref_otherToolbars"/>
     </prefpane>
 </prefwindow>

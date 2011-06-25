@@ -9,6 +9,8 @@ let simplyPinnedChrome =
 
     init : function()
     {
+        window.removeEventListener("load", simplyPinnedChrome.init, false);
+        
         //POPULATING otherToolbars ARRAY
         //- only add elements that have toolbarnames,
         //  are not part of the never to be hidden array,
@@ -65,20 +67,30 @@ let simplyPinnedChrome =
             },
             false);
         
-        window.removeEventListener("load", simplyPinnedChrome.init, false);
+        //FIXES PROBLEM WITH PLACESTOOLBAR ITEM IN BOOKMARKS BAR
+        //where the places toolbar item doesn't show up if you launch your
+        //browser with a pinned tab selected
+        PlacesToolbarHelper.init();
     },
     
     /**
      * Sets the visibility of element with id passed in
-     * @param Toolbar elem The id of the element you want shown/hidden
+     * @param XULElement toolbar The toolbar you want shown/hidden
      * @param Boolean enabled If changing the visibility is enabled for this
      *  element, it will be hidden/shown based on the show value passed in
-     * @param Boolean show If true, the element passed in is shown.
+     * @param Boolean isVisible If true, the element passed in is shown.
      *  If false, the element passed in is hidden.
      */
-    setToolbarVisibilityIfEnabled : function(elem, enabled, show)
+    setToolbarVisibilityIfEnabled : function(toolbar, enabled, isVisible)
     {
-        setToolbarVisibility(elem, (enabled? show : true));
+        if(enabled)
+        {
+            toolbar.style.display = (isVisible? "inherit" : "none");
+        }
+        else
+        {
+            toolbar.style.display = "inherit";
+        }
     },
     
     /**
@@ -101,7 +113,7 @@ let simplyPinnedChrome =
                 simplyPinnedChrome.setToolbarVisibilityIfEnabled(
                     document.getElementById(aDefaultElemId),
                     prefs.getBoolPref("bool_" + aDefaultElemId),
-                    show)
+                    show);
             },
             this
         );
@@ -114,7 +126,7 @@ let simplyPinnedChrome =
                 simplyPinnedChrome.setToolbarVisibilityIfEnabled(
                     anOtherToolbar,
                     prefs.getBoolPref("bool_otherToolbars"),
-                    show)
+                    show);
             },
             this
         );

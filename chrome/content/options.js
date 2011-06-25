@@ -1,11 +1,5 @@
 let simplyPinnedOptions =
 {
-    //TODO: fix the bug where you can create a new custom toolbar and it
-    //  1) doesn't have its name show up in the options screen (but the 
-    //     other toolbars label does appear)
-    //  2) doesn't have its name show up in the options screen without a restart
-    
-    //TODO: make LEFT_PADDING not hardcoded... somehow grab width from the checkbox?
     LEFT_PADDING : "25px",
     
     init : function()
@@ -24,14 +18,17 @@ let simplyPinnedOptions =
         }
         else
         {
-            for(var i = 0; i < otherToolbars.length; i++)
-            {
-                var aLabel = document.createElement("label");
-                aLabel.setAttribute("value",
-                                    otherToolbars[i].getAttribute("toolbarname"));
-                aLabel.style.paddingLeft = LEFT_PADDING;
-                document.getElementById("optionsPane").appendChild(aLabel);
-            }
+            otherToolbars.forEach
+            (
+                function(tlbr)
+                {
+                    var lbl = document.createElement("label");
+                    lbl.setAttribute("value", tlbr.getAttribute("toolbarname"));
+                    lbl.style.paddingLeft = simplyPinnedOptions.LEFT_PADDING;
+                    document.getElementById("optionsPane").appendChild(lbl);
+                },
+                this
+            );
         }
     }
 }

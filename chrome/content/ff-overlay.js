@@ -17,23 +17,15 @@ let simplyPinnedChrome =
         {
             var aToolbar = document.getElementsByTagName("toolbar")[i];
             
-            var isNeverHideElem = false;
-            for(var j = 0; j < simplyPinnedChrome.NEVER_HIDE_ELEMENT_IDS.length
-                            && !isNeverHideElem; j++)
-            {
-                isNeverHideElem =
-                    (simplyPinnedChrome.NEVER_HIDE_ELEMENT_IDS[j] == aToolbar.id);
-            }
+            var isNeverHideElem =
+                simplyPinnedChrome.NEVER_HIDE_ELEMENT_IDS.some
+                    (function(elemId){return elemId == aToolbar.id}, this);
             
-            var isDefaultElem = false;
-            for(var j = 0; j < simplyPinnedChrome.DEFAULT_ELEMENT_IDS.length
-                            && !isDefaultElem && !isNeverHideElem; j++)
-            {
-                isDefaultElem =
-                    (simplyPinnedChrome.DEFAULT_ELEMENT_IDS[j] == aToolbar.id)
-            }
+            var isDefaultElem =
+                simplyPinnedChrome.DEFAULT_ELEMENT_IDS.some
+                    (function(elemId){return elemId == aToolbar.id}, this);
             
-            if(aToolbar.getAttribute("toolbarname") != ""
+            if(aToolbar.hasAttribute("toolbarname")
                && !isNeverHideElem && !isDefaultElem)
             {
                 simplyPinnedChrome.otherToolbarElems.push(aToolbar);
@@ -102,22 +94,30 @@ let simplyPinnedChrome =
                 .getBranch("extensions.simplypinned.");
                 
         //SETTING VISIBILITY OF DEFAULT ELEMENTS
-        for(var i = 0; i < simplyPinnedChrome.DEFAULT_ELEMENT_IDS.length; i++)
-        {
-            simplyPinnedChrome.setToolbarVisibilityIfEnabled(
-                document.getElementById(simplyPinnedChrome.DEFAULT_ELEMENT_IDS[i]),
-                prefs.getBoolPref("bool_" + simplyPinnedChrome.DEFAULT_ELEMENT_IDS[i]),
-                show)
-        }
+        simplyPinnedChrome.DEFAULT_ELEMENT_IDS.forEach
+        (
+            function(aDefaultElemId)
+            {
+                simplyPinnedChrome.setToolbarVisibilityIfEnabled(
+                    document.getElementById(aDefaultElemId),
+                    prefs.getBoolPref("bool_" + aDefaultElemId),
+                    show)
+            },
+            this
+        );
         
         //SETTING VISIBILITY OF OTHER TOOLBARS
-        for(var i = 0; i < simplyPinnedChrome.otherToolbarElems.length; i++)
-        {
-            simplyPinnedChrome.setToolbarVisibilityIfEnabled(
-                simplyPinnedChrome.otherToolbarElems[i],
-                prefs.getBoolPref("bool_otherToolbars"),
-                show)
-        }
+        simplyPinnedChrome.otherToolbarElems.forEach
+        (
+            function(anOtherToolbar)
+            {
+                simplyPinnedChrome.setToolbarVisibilityIfEnabled(
+                    anOtherToolbar,
+                    prefs.getBoolPref("bool_otherToolbars"),
+                    show)
+            },
+            this
+        );
     }
 }
 

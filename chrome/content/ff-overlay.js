@@ -1,22 +1,12 @@
 let simplyPinnedChrome =
 {
-    //TODO: fix the bug where if you launch firefox to a pinned tab w/ the
-    //  bookmarks toolbar hidden, then switch tabs it screws up
-    //  - try delaying hiding elements on initial launch after something different is loaded
-    
-    //TODO: ability to toggle on and off
-    // - add toolbar button (can be added to tab bar if someone wanted to)
-    // - add hotkey for toggling
-    // - after the above is finished, add an option to enable hiding for only pinned
-    //   or for all tabs, (which enables or disables the hotkey too?)
-    
     DEFAULT_ELEMENT_IDS     : new Array("nav-bar",
                                         "PersonalToolbar",
                                         "addon-bar"),
     NEVER_HIDE_ELEMENT_IDS  : new Array("toolbar-menubar"),
 
     otherToolbarElems       : new Array(),
-    
+
     init : function()
     {
         //POPULATING otherToolbars ARRAY
@@ -51,14 +41,13 @@ let simplyPinnedChrome =
         }
         
         //ADDING EVENT LISTENERS
-        //TODO: find out--Are event listeners automatically removed when the tab is closed?
         var container = gBrowser.tabContainer;
         
         //on tab selection change
         container.addEventListener("TabSelect",
             function(event)
             {
-                simplyPinnedChrome.setVisibilityOfAll(!event.target.pinned);
+                simplyPinnedChrome.setVisibilityOfAllToolbars(!event.target.pinned);
             },
             false);
         
@@ -68,7 +57,7 @@ let simplyPinnedChrome =
             {
                 if(event.target.selected)
                 {
-                    simplyPinnedChrome.setVisibilityOfAll(false);
+                    simplyPinnedChrome.setVisibilityOfAllToolbars(false);
                 }
             },
             false);
@@ -78,7 +67,9 @@ let simplyPinnedChrome =
             function(event)
             {
                 if(event.target.selected)
-                    simplyPinnedChrome.setVisibilityOfAll(true);
+                {
+                    simplyPinnedChrome.setVisibilityOfAllToolbars(true);
+                }
             },
             false);
             
@@ -86,23 +77,15 @@ let simplyPinnedChrome =
     
     /**
      * Sets the visibility of element with id passed in
-     * @param String anElemId The id of the element you want shown/hidden
+     * @param Toolbar elem The id of the element you want shown/hidden
      * @param Boolean enabled If changing the visibility is enabled for this
      *  element, it will be hidden/shown based on the show value passed in
      * @param Boolean show If true, the element passed in is shown.
      *  If false, the element passed in is hidden.
      */
-    setVisibilityOfElement : function(anElemId, enabled, show)
+    setToolbarVisibilityIfEnabled : function(elem, enabled, show)
     {
-        var elem = document.getElementById(anElemId);
-        if(enabled)
-        {
-            elem.style.display = show? "inherit" : "none";
-        }
-        else
-        {
-            elem.style.display = "inherit";
-        }
+        setToolbarVisibility(elem, (enabled? show : true));
     },
     
     /**
@@ -111,7 +94,7 @@ let simplyPinnedChrome =
      * @param Boolean show True shows the toolbars, false hides.
      *  of elements to be hidden/shown
      */
-    setVisibilityOfAll : function(show)
+    setVisibilityOfAllToolbars : function(show)
     {
         prefs = Components.classes["@mozilla.org/preferences-service;1"]
                 .getService(Components.interfaces.nsIPrefService)
@@ -120,8 +103,8 @@ let simplyPinnedChrome =
         //SETTING VISIBILITY OF DEFAULT ELEMENTS
         for(var i = 0; i < simplyPinnedChrome.DEFAULT_ELEMENT_IDS.length; i++)
         {
-            simplyPinnedChrome.setVisibilityOfElement(
-                simplyPinnedChrome.DEFAULT_ELEMENT_IDS[i],
+            simplyPinnedChrome.setToolbarVisibilityIfEnabled(
+                document.getElementById(simplyPinnedChrome.DEFAULT_ELEMENT_IDS[i]),
                 prefs.getBoolPref("bool_" + simplyPinnedChrome.DEFAULT_ELEMENT_IDS[i]),
                 show)
         }
@@ -129,8 +112,8 @@ let simplyPinnedChrome =
         //SETTING VISIBILITY OF OTHER TOOLBARS
         for(var i = 0; i < simplyPinnedChrome.otherToolbarElems.length; i++)
         {
-            simplyPinnedChrome.setVisibilityOfElement(
-                simplyPinnedChrome.DEFAULT_ELEMENT_IDS[i],
+            simplyPinnedChrome.setToolbarVisibilityIfEnabled(
+                simplyPinnedChrome.otherToolbarElems[i],
                 prefs.getBoolPref("bool_otherToolbars"),
                 show)
         }

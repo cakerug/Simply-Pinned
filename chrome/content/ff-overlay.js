@@ -72,7 +72,8 @@ let simplyPinnedChrome =
                 }
             },
             false);
-            
+        
+        window.removeEventListener("load", simplyPinnedChrome.init, false);
     },
     
     /**

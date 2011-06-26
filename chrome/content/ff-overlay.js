@@ -1,9 +1,9 @@
 let simplyPinnedChrome =
 {
-    DEFAULT_ELEMENT_IDS     : new Array("nav-bar",
+    DEFAULT_ELEMENT_IDS     : new Array("toolbar-menubar",
+                                        "nav-bar",
                                         "PersonalToolbar",
                                         "addon-bar"),
-    NEVER_HIDE_ELEMENT_IDS  : new Array("toolbar-menubar"),
 
     otherToolbarElems       : new Array(),
 
@@ -19,16 +19,11 @@ let simplyPinnedChrome =
         {
             var aToolbar = document.getElementsByTagName("toolbar")[i];
             
-            var isNeverHideElem =
-                simplyPinnedChrome.NEVER_HIDE_ELEMENT_IDS.some
-                    (function(elemId){return elemId == aToolbar.id}, this);
-            
             var isDefaultElem =
                 simplyPinnedChrome.DEFAULT_ELEMENT_IDS.some
                     (function(elemId){return elemId == aToolbar.id}, this);
             
-            if(aToolbar.hasAttribute("toolbarname")
-               && !isNeverHideElem && !isDefaultElem)
+            if(aToolbar.hasAttribute("toolbarname") && !isDefaultElem)
             {
                 simplyPinnedChrome.otherToolbarElems.push(aToolbar);
             }

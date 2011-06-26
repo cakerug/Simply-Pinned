@@ -8,6 +8,8 @@
         src="chrome://simplypinned/content/options.js" />
     <prefpane id="optionsPane">
         <preferences>
+            <preference type="bool" id="boolpref_toolbar-menubar"
+                name="extensions.simplypinned.bool_toolbar-menubar" />
             <preference type="bool" id="boolpref_nav-bar"
                 name="extensions.simplypinned.bool_nav-bar" />
             <preference type="bool" id="boolpref_PersonalToolbar"
@@ -18,6 +20,8 @@
                 name="extensions.simplypinned.bool_otherToolbars" />
         </preferences>
         <description id="descPrefs">&prefs.desc;</description>
+        <checkbox id="chk_toolbar-menubar" label="&chk_toolbar-menubar.label;"
+            preference="boolpref_toolbar-menubar"/>
         <checkbox id="chk_nav-bar" label="&chk_nav-bar.label;"
             preference="boolpref_nav-bar"/>
         <checkbox id="chk_PersonalToolbar" label="&chk_PersonalToolbar.label;"

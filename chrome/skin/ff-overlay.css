@@ -1,0 +1,11 @@
+#simplypinned-toggle-button {
+    list-style-image: url("chrome://simplypinned/skin/toggleBtn.png");
+}
+
+.simplypinned-active-button {
+    -moz-image-region: rect(0, 18px, 18px, 0);
+}
+
+.simplypinned-inactive-button {
+    -moz-image-region: rect(16px, 18px, 32px, 0);
+}

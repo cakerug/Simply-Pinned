@@ -1,19 +1,87 @@
 let simplyPinnedChrome =
 {
-    DEFAULT_ELEMENT_IDS     : new Array("toolbar-menubar",
-                                        "nav-bar",
-                                        "PersonalToolbar",
-                                        "addon-bar"),
+    PREFS : Components.classes["@mozilla.org/preferences-service;1"]
+            .getService(Components.interfaces.nsIPrefService)
+            .getBranch("extensions.simplypinned."),
+    
+    //ELEMENTS THAT ARE CONTROLLED BY INDIVIDUAL PREFERENCES
+    //& ARE PART OF THE DEFAULT FIREFOX
+    DEFAULT_ELEMENT_IDS : new Array("toolbar-menubar",
+                                    "nav-bar",
+                                    "PersonalToolbar",
+                                    "addon-bar"),
 
-    otherToolbarElems       : new Array(),
+    //TOOLBARS THAT ARE ALL CONTROLLED BY A SINGLE PREFERENCE
+    //& ARE POPULATED BY TOOLBARS ADDED BY OTHER EXTENSIONS
+    otherToolbarElems : new Array(),
+    
+    //KEEPS TRACK OF IF THE TOOLBARS ARE VISIBLE OR NOT
+    visibleFlag : true,
+    
+    //TOGGLE BUTTON
+    toggleBtn : new Object(),
+    
+    //CLASS NAMES OF TOGGLE BUTTON
+    BUTTON_CLASS_ACTIVE : "simplypinned-active-button",
+    BUTTON_CLASS_INACTIVE : "simplypinned-inactive-button",
 
     init : function()
     {
-        window.removeEventListener("load", simplyPinnedChrome.init, false);
+        //FIRST RUN
+        var ver = -1, firstrun = true;
+        var current = 0;
+        
+        Components.utils.import("resource://gre/modules/AddonManager.jsm");
+        AddonManager.getAddonByID("simplypinned@grace.ku", function(addon)
+            {
+                // This is an asynchronous callback function that might not be called immediately
+                current = addon.version;
+            }
+        );
+        
+        try
+        {
+            ver = simplyPinnedChrome.PREFS.getCharPref("version");
+            firstrun = simplyPinnedChrome.PREFS.getBoolPref("firstrun");
+        }
+        catch(e){}
+        finally
+        {
+            if (firstrun)
+            {
+                simplyPinnedChrome.PREFS.setBoolPref("firstrun",false);
+                simplyPinnedChrome.PREFS.setCharPref("version",current);
+                
+                //ADDS TOGGLE BUTTON TO TABS TOOLBAR
+                var myId    = "simplypinned-toggle-button"; // ID of button to add
+                var afterId = "new-tab-button";    // ID of element to insert after
+                var tabBar  = document.getElementById("TabsToolbar");
+                var curSet  = tabBar.currentSet.split(",");
+              
+                if (curSet.indexOf(myId) == -1) {
+                  var pos = curSet.indexOf(afterId) + 1 || curSet.length;
+                  var set = curSet.slice(0, pos).concat(myId).concat(curSet.slice(pos));
+              
+                  tabBar.setAttribute("currentset", set.join(","));
+                  tabBar.currentSet = set.join(",");
+                  document.persist(navBar.id, "currentset");
+                  try {
+                    BrowserToolboxCustomizeDone(true);
+                  }
+                  catch (e) {}
+                }
+            }
+            
+            //this section does not get loaded if its a first run
+            if (ver != current && !firstrun)
+            {
+                simplyPinnedChrome.PREFS.setCharPref("version", current);
+                //if version is different here => upgrade
+            }
+        }
         
         //POPULATING otherToolbars ARRAY
         //- only add elements that have toolbarnames,
-        //  are not part of the never to be hidden array,
         //  and that aren't already listed (defaultElements)
         for(var i = 0; i < document.getElementsByTagName("toolbar").length; i++)
         {
@@ -29,6 +97,10 @@ let simplyPinnedChrome =
             }
         }
         
+        //INITIALIZING TOGGLE BUTTON
+        simplyPinnedChrome.toggleBtn =
+            document.getElementById("simplypinned-toggle-button");
+        
         //ADDING EVENT LISTENERS
         var container = gBrowser.tabContainer;
         
@@ -37,6 +109,10 @@ let simplyPinnedChrome =
             function(event)
             {
                 simplyPinnedChrome.setVisibilityOfAllToolbars(!event.target.pinned);
+                
+                //hide toggle button if not pinned
+                simplyPinnedChrome.toggleBtn.style.display =
+                    event.target.pinned? "inherit" : "none";
             },
             false);
         
@@ -66,6 +142,9 @@ let simplyPinnedChrome =
         //where the places toolbar item doesn't show up if you launch your
         //browser with a pinned tab selected
         PlacesToolbarHelper.init();
+        
+        //REMOVING WINDOW LOAD EVENT LISTENER
+        window.removeEventListener("load", simplyPinnedChrome.init, false);
     },
     
     /**
@@ -96,10 +175,6 @@ let simplyPinnedChrome =
      */
     setVisibilityOfAllToolbars : function(show)
     {
-        prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                .getService(Components.interfaces.nsIPrefService)
-                .getBranch("extensions.simplypinned.");
-                
         //SETTING VISIBILITY OF DEFAULT ELEMENTS
         simplyPinnedChrome.DEFAULT_ELEMENT_IDS.forEach
         (
@@ -107,7 +182,7 @@ let simplyPinnedChrome =
             {
                 simplyPinnedChrome.setToolbarVisibilityIfEnabled(
                     document.getElementById(aDefaultElemId),
-                    prefs.getBoolPref("bool_" + aDefaultElemId),
+                    simplyPinnedChrome.PREFS.getBoolPref("bool_" + aDefaultElemId),
                     show);
             },
             this
@@ -120,11 +195,34 @@ let simplyPinnedChrome =
             {
                 simplyPinnedChrome.setToolbarVisibilityIfEnabled(
                     anOtherToolbar,
-                    prefs.getBoolPref("bool_otherToolbars"),
+                    simplyPinnedChrome.PREFS.getBoolPref("bool_otherToolbars"),
                     show);
             },
             this
         );
+        
+        //CHANGE TOGGLE BUTTON IMAGE
+        var classArray = simplyPinnedChrome.toggleBtn.getAttribute("class").split(" ");
+        
+        if(classArray[classArray.length - 1] == simplyPinnedChrome.BUTTON_CLASS_ACTIVE
+           || classArray[classArray.length - 1] == simplyPinnedChrome.BUTTON_CLASS_INACTIVE)
+        {
+            classArray.pop();
+        }
+        
+        if(show)
+        {
+            classArray.push(simplyPinnedChrome.BUTTON_CLASS_ACTIVE);
+        }
+        else
+        {
+            classArray.push(simplyPinnedChrome.BUTTON_CLASS_INACTIVE);
+        }
+        
+        simplyPinnedChrome.toggleBtn.setAttribute("class", classArray.join(" "));
+        
+        //UPDATE VISIBLE FLAG
+        simplyPinnedChrome.visibleFlag = show;
     }
 }
 

@@ -1,4 +1,6 @@
-content     simplypinned         chrome/content/
-locale      simplypinned  en-US  chrome/locale/en-US/
+content     simplypinned              chrome/content/
+skin        simplypinned  classic/1.0 chrome/skin/
+locale      simplypinned  en-US       chrome/locale/en-US/
 
-overlay     chrome://browser/content/browser.xul    chrome://simplypinned/content/ff-overlay.xul
+overlay chrome://browser/content/browser.xul chrome://simplypinned/content/ff-overlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://simplypinned/skin/ff-overlay.css

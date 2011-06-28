@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://simplypinned/skin/ff-overlay.css" type="text/css"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://simplypinned/locale/ff-overlay.dtd">
 <overlay id="simplypinned-browser-overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script type="application/x-javascript"
         src="chrome://simplypinned/content/ff-overlay.js" />
+    <toolbarpalette id="BrowserToolbarPalette">
+        <toolbarbutton id="simplypinned-toggle-button"
+            label="&simplypinned-toggle-button.label;"
+            tooltiptext="&simplypinned-toggle-button.tooltiptext;"
+            oncommand="simplyPinnedChrome.setVisibilityOfAllToolbars(!simplyPinnedChrome.visibleFlag);"
+            class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    </toolbarpalette>
 </overlay>

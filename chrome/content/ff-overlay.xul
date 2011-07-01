@@ -10,6 +10,6 @@
             label="&simplypinned-toggle-button.label;"
             tooltiptext="&simplypinned-toggle-button.tooltiptext;"
             oncommand="simplyPinnedChrome.setVisibilityOfAllToolbars(!simplyPinnedChrome.visibleFlag);"
-            class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+            class="toolbarbutton-1 chromeclass-toolbar-additional simplypinned-inactive-button"/>
     </toolbarpalette>
 </overlay>

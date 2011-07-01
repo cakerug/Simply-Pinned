@@ -24,7 +24,7 @@ let simplyPinnedChrome =
     //CLASS NAMES OF TOGGLE BUTTON
     BUTTON_CLASS_ACTIVE : "simplypinned-active-button",
     BUTTON_CLASS_INACTIVE : "simplypinned-inactive-button",
-
+    
     init : function()
     {
         //FIRST RUN
@@ -49,8 +49,8 @@ let simplyPinnedChrome =
         {
             if (firstrun)
             {
-                simplyPinnedChrome.PREFS.setBoolPref("firstrun",false);
-                simplyPinnedChrome.PREFS.setCharPref("version",current);
+                simplyPinnedChrome.PREFS.setBoolPref("firstrun", false);
+                simplyPinnedChrome.PREFS.setCharPref("version", current);
                 
                 //ADDS TOGGLE BUTTON TO TABS TOOLBAR
                 var myId    = "simplypinned-toggle-button"; // ID of button to add
@@ -58,17 +58,20 @@ let simplyPinnedChrome =
                 var tabBar  = document.getElementById("TabsToolbar");
                 var curSet  = tabBar.currentSet.split(",");
               
-                if (curSet.indexOf(myId) == -1) {
-                  var pos = curSet.indexOf(afterId) + 1 || curSet.length;
-                  var set = curSet.slice(0, pos).concat(myId).concat(curSet.slice(pos));
-              
-                  tabBar.setAttribute("currentset", set.join(","));
-                  tabBar.currentSet = set.join(",");
-                  document.persist(navBar.id, "currentset");
-                  try {
-                    BrowserToolboxCustomizeDone(true);
-                  }
-                  catch (e) {}
+                if (curSet.indexOf(myId) == -1)
+                {
+                    var pos = curSet.indexOf(afterId) + 1 || curSet.length;
+                    var set = curSet.slice(0, pos)
+                                .concat(myId).concat(curSet.slice(pos));
+                
+                    tabBar.setAttribute("currentset", set.join(","));
+                    tabBar.currentSet = set.join(",");
+                    document.persist(navBar.id, "currentset");
+                    try
+                    {
+                        BrowserToolboxCustomizeDone(true);
+                    }
+                    catch(e){}
                 }
             }
             
@@ -101,7 +104,13 @@ let simplyPinnedChrome =
         simplyPinnedChrome.toggleBtn =
             document.getElementById("simplypinned-toggle-button");
         
-        //ADDING EVENT LISTENERS
+        //ON PAGE LOAD, SET VISIBILITY OF TOGGLEBUTTON AND TOOLBARS
+        document.getElementById("appcontent")
+            .addEventListener("DOMContentLoaded",
+                              simplyPinnedChrome.onPageLoad,
+                              true);
+        
+        //ADDING TAB EVENT LISTENERS
         var container = gBrowser.tabContainer;
         
         //on tab selection change
@@ -109,10 +118,6 @@ let simplyPinnedChrome =
             function(event)
             {
                 simplyPinnedChrome.setVisibilityOfAllToolbars(!event.target.pinned);
-                
-                //hide toggle button if not pinned
-                simplyPinnedChrome.toggleBtn.style.display =
-                    event.target.pinned? "inherit" : "none";
             },
             false);
         
@@ -145,6 +150,13 @@ let simplyPinnedChrome =
         
         //REMOVING WINDOW LOAD EVENT LISTENER
         window.removeEventListener("load", simplyPinnedChrome.init, false);
+    },
+    
+    onPageLoad : function()
+    {
+        simplyPinnedChrome.setVisibilityOfAllToolbars(!gBrowser.selectedTab.pinned);
+        document.getElementById("appcontent")
+            .removeEventListener("load", simplyPinnedChrome.onPageLoad, false);
     },
     
     /**
@@ -201,8 +213,13 @@ let simplyPinnedChrome =
             this
         );
         
+        //HIDE TOGGLE BUTTON IF NOT PINNED
+        simplyPinnedChrome.toggleBtn.style.display =
+            gBrowser.selectedTab.pinned? "inherit" : "none";
+            
         //CHANGE TOGGLE BUTTON IMAGE
-        var classArray = simplyPinnedChrome.toggleBtn.getAttribute("class").split(" ");
+        var classArray = simplyPinnedChrome.toggleBtn
+                            .getAttribute("class").split(" ");
         
         if(classArray[classArray.length - 1] == simplyPinnedChrome.BUTTON_CLASS_ACTIVE
            || classArray[classArray.length - 1] == simplyPinnedChrome.BUTTON_CLASS_INACTIVE)
@@ -210,14 +227,9 @@ let simplyPinnedChrome =
             classArray.pop();
         }
         
-        if(show)
-        {
-            classArray.push(simplyPinnedChrome.BUTTON_CLASS_ACTIVE);
-        }
-        else
-        {
-            classArray.push(simplyPinnedChrome.BUTTON_CLASS_INACTIVE);
-        }
+        classArray.push(show?
+                            simplyPinnedChrome.BUTTON_CLASS_ACTIVE
+                          : simplyPinnedChrome.BUTTON_CLASS_INACTIVE);
         
         simplyPinnedChrome.toggleBtn.setAttribute("class", classArray.join(" "));
         

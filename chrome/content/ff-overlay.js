@@ -235,6 +235,14 @@ let simplyPinnedChrome =
         
         //UPDATE VISIBLE FLAG
         simplyPinnedChrome.visibleFlag = show;
+    },
+    
+    toggleVisibility : function()
+    {
+        if(gBrowser.selectedTab.pinned)
+        {
+            simplyPinnedChrome.setVisibilityOfAllToolbars(!simplyPinnedChrome.visibleFlag);
+        }
     }
 }
 

@@ -7,7 +7,6 @@
         src="chrome://simplypinned/content/ff-overlay.js" />
      <keyset>
         <key id="simplypinned-toggle-key"
-             modifiers="control alt shift" key="t"
              oncommand="SPChrome.toggleVisibility();"/>
      </keyset>
     <toolbarpalette id="BrowserToolbarPalette">

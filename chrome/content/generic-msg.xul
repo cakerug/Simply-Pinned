@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	id="simplypinned-generic"
+        title="Simply Pinned"
+	buttons="accept"
+        onload="SPGenericMsg.init();">
+    <script type="application/x-javascript"
+        src="chrome://simplypinned/content/generic-msg.js" />
+    <label id="simplypinned-generic-msg-label" />
+</dialog>

@@ -1,5 +1,7 @@
-let simplyPinnedChrome =
+let SPChrome =
 {
+    //TODO: protection to tabs against closing
+
     PREFS : Components.classes["@mozilla.org/preferences-service;1"]
             .getService(Components.interfaces.nsIPrefService)
             .getBranch("extensions.simplypinned."),
@@ -11,19 +13,20 @@ let simplyPinnedChrome =
                                     "PersonalToolbar",
                                     "addon-bar"),
 
+    //CLASS NAMES OF TOGGLE BUTTON
+    BUTTON_CLASS_ACTIVE   : "simplypinned-active-button",
+    BUTTON_CLASS_INACTIVE : "simplypinned-inactive-button",
+
+    //ELEMENT REFERENCES
+    toggleBtn : new Object(),
+    toggleKey : new Object(),
+
     //TOOLBARS THAT ARE ALL CONTROLLED BY A SINGLE PREFERENCE
     //& ARE POPULATED BY TOOLBARS ADDED BY OTHER EXTENSIONS
     otherToolbarElems : new Array(),
     
     //KEEPS TRACK OF IF THE TOOLBARS ARE VISIBLE OR NOT
     visibleFlag : true,
-    
-    //TOGGLE BUTTON
-    toggleBtn : new Object(),
-    
-    //CLASS NAMES OF TOGGLE BUTTON
-    BUTTON_CLASS_ACTIVE : "simplypinned-active-button",
-    BUTTON_CLASS_INACTIVE : "simplypinned-inactive-button",
     
     init : function()
     {
@@ -32,37 +35,40 @@ let simplyPinnedChrome =
         var current = 0;
         
         Components.utils.import("resource://gre/modules/AddonManager.jsm");
-        AddonManager.getAddonByID("simplypinned@grace.ku", function(addon)
+        AddonManager.getAddonByID("simplypinned@grace.ku",
+            function(addon)
             {
-                // This is an asynchronous callback function that might not be called immediately
+                //This is an asynchronous callback function that might not be
+                //called immediately
                 current = addon.version;
             }
         );
         
         try
         {
-            ver = simplyPinnedChrome.PREFS.getCharPref("version");
-            firstrun = simplyPinnedChrome.PREFS.getBoolPref("firstrun");
+            ver = SPChrome.PREFS.getCharPref("version");
+            firstrun = SPChrome.PREFS.getBoolPref("firstrun");
         }
         catch(e){}
         finally
         {
             if (firstrun)
             {
-                simplyPinnedChrome.PREFS.setBoolPref("firstrun", false);
-                simplyPinnedChrome.PREFS.setCharPref("version", current);
+                SPChrome.PREFS.setBoolPref("firstrun", false);
+                SPChrome.PREFS.setCharPref("version", current);
                 
                 //ADDS TOGGLE BUTTON TO TABS TOOLBAR
-                var myId    = "simplypinned-toggle-button"; // ID of button to add
-                var afterId = "new-tab-button";    // ID of element to insert after
+                var buttonToAddId = "simplypinned-toggle-button";
+                var insertAfterId = "new-tab-button";
                 var tabBar  = document.getElementById("TabsToolbar");
                 var curSet  = tabBar.currentSet.split(",");
               
-                if (curSet.indexOf(myId) == -1)
+                if (curSet.indexOf(buttonToAdd) == -1)
                 {
-                    var pos = curSet.indexOf(afterId) + 1 || curSet.length;
+                    var pos = curSet.indexOf(insertAfterId) + 1 ||
+                              curSet.length;
                     var set = curSet.slice(0, pos)
-                                .concat(myId).concat(curSet.slice(pos));
+                                .concat(buttonToAdd).concat(curSet.slice(pos));
                 
                     tabBar.setAttribute("currentset", set.join(","));
                     tabBar.currentSet = set.join(",");
@@ -78,7 +84,7 @@ let simplyPinnedChrome =
             //this section does not get loaded if its a first run
             if (ver != current && !firstrun)
             {
-                simplyPinnedChrome.PREFS.setCharPref("version", current);
+                SPChrome.PREFS.setCharPref("version", current);
                 //if version is different here => upgrade
             }
         }
@@ -90,26 +96,41 @@ let simplyPinnedChrome =
         {
             var aToolbar = document.getElementsByTagName("toolbar")[i];
             
-            var isDefaultElem =
-                simplyPinnedChrome.DEFAULT_ELEMENT_IDS.some
-                    (function(elemId){return elemId == aToolbar.id}, this);
+            var isDefaultElem = SPChrome.DEFAULT_ELEMENT_IDS.some
+            (
+                function(elemId)
+                {
+                    return elemId == aToolbar.id
+                },
+                this
+            );
             
             if(aToolbar.hasAttribute("toolbarname") && !isDefaultElem)
-            {
-                simplyPinnedChrome.otherToolbarElems.push(aToolbar);
-            }
+                SPChrome.otherToolbarElems.push(aToolbar);
         }
         
-        //INITIALIZING TOGGLE BUTTON
-        simplyPinnedChrome.toggleBtn =
+        //INITIALIZING ELEMENT REFERENCES
+        SPChrome.toggleBtn =
             document.getElementById("simplypinned-toggle-button");
-        
-        //ON PAGE LOAD, SET VISIBILITY OF TOGGLEBUTTON AND TOOLBARS
+            
+        //INITIALIZING VISIBILITY OF TOOLBARS, TOGGLEBUTTON, AND TOGGLEKEY
         document.getElementById("appcontent")
             .addEventListener("DOMContentLoaded",
-                              simplyPinnedChrome.onPageLoad,
+                              SPChrome.onPageLoad,
                               true);
         
+        //CHANGE TOGGLE HOTKEY
+        var hotkeyStr = SPChrome.PREFS
+            .getCharPref("char_simplypinned-toggle-key");
+        var modifiersArray = hotkeyStr.toLowerCase().split(" + ");
+        var keyStr = modifiersArray.pop();
+        
+        document.getElementById("simplypinned-toggle-key")
+            .setAttribute("modifiers", modifiersArray.join(" "));
+            
+        document.getElementById("simplypinned-toggle-key")
+            .setAttribute("key", keyStr);
+            
         //ADDING TAB EVENT LISTENERS
         var container = gBrowser.tabContainer;
         
@@ -117,7 +138,7 @@ let simplyPinnedChrome =
         container.addEventListener("TabSelect",
             function(event)
             {
-                simplyPinnedChrome.setVisibilityOfAllToolbars(!event.target.pinned);
+                SPChrome.setVisibilityOfAllToolbars(!event.target.pinned);
             },
             false);
         
@@ -126,9 +147,7 @@ let simplyPinnedChrome =
             function(event)
             {
                 if(event.target.selected)
-                {
-                    simplyPinnedChrome.setVisibilityOfAllToolbars(false);
-                }
+                    SPChrome.setVisibilityOfAllToolbars(false);
             },
             false);
         
@@ -137,9 +156,7 @@ let simplyPinnedChrome =
             function(event)
             {
                 if(event.target.selected)
-                {
-                    simplyPinnedChrome.setVisibilityOfAllToolbars(true);
-                }
+                    SPChrome.setVisibilityOfAllToolbars(true);
             },
             false);
         
@@ -149,18 +166,19 @@ let simplyPinnedChrome =
         PlacesToolbarHelper.init();
         
         //REMOVING WINDOW LOAD EVENT LISTENER
-        window.removeEventListener("load", simplyPinnedChrome.init, false);
+        window.removeEventListener("load", SPChrome.init, false);
     },
     
     onPageLoad : function()
     {
-        simplyPinnedChrome.setVisibilityOfAllToolbars(!gBrowser.selectedTab.pinned);
+        SPChrome.setVisibilityOfAllToolbars(!gBrowser.selectedTab.pinned);
+            
         document.getElementById("appcontent")
-            .removeEventListener("load", simplyPinnedChrome.onPageLoad, false);
+            .removeEventListener("load", SPChrome.onPageLoad, false);
     },
     
     /**
-     * Sets the visibility of element with id passed in
+     * Sets the visibility of toolbar with id passed in
      * @param XULElement toolbar The toolbar you want shown/hidden
      * @param Boolean enabled If changing the visibility is enabled for this
      *  element, it will be hidden/shown based on the show value passed in
@@ -170,13 +188,9 @@ let simplyPinnedChrome =
     setToolbarVisibilityIfEnabled : function(toolbar, enabled, isVisible)
     {
         if(enabled)
-        {
             toolbar.style.display = (isVisible? "inherit" : "none");
-        }
         else
-        {
             toolbar.style.display = "inherit";
-        }
     },
     
     /**
@@ -188,62 +202,63 @@ let simplyPinnedChrome =
     setVisibilityOfAllToolbars : function(show)
     {
         //SETTING VISIBILITY OF DEFAULT ELEMENTS
-        simplyPinnedChrome.DEFAULT_ELEMENT_IDS.forEach
+        SPChrome.DEFAULT_ELEMENT_IDS.forEach
         (
             function(aDefaultElemId)
             {
-                simplyPinnedChrome.setToolbarVisibilityIfEnabled(
+                SPChrome.setToolbarVisibilityIfEnabled(
                     document.getElementById(aDefaultElemId),
-                    simplyPinnedChrome.PREFS.getBoolPref("bool_" + aDefaultElemId),
+                    SPChrome.PREFS.getBoolPref("bool_" + aDefaultElemId),
                     show);
             },
             this
         );
         
         //SETTING VISIBILITY OF OTHER TOOLBARS
-        simplyPinnedChrome.otherToolbarElems.forEach
+        SPChrome.otherToolbarElems.forEach
         (
             function(anOtherToolbar)
             {
-                simplyPinnedChrome.setToolbarVisibilityIfEnabled(
+                SPChrome.setToolbarVisibilityIfEnabled(
                     anOtherToolbar,
-                    simplyPinnedChrome.PREFS.getBoolPref("bool_otherToolbars"),
+                    SPChrome.PREFS.getBoolPref("bool_otherToolbars"),
                     show);
             },
             this
         );
         
         //HIDE TOGGLE BUTTON IF NOT PINNED
-        simplyPinnedChrome.toggleBtn.style.display =
+        SPChrome.toggleBtn.style.display =
             gBrowser.selectedTab.pinned? "inherit" : "none";
             
         //CHANGE TOGGLE BUTTON IMAGE
-        var classArray = simplyPinnedChrome.toggleBtn
-                            .getAttribute("class").split(" ");
+        var classArray = SPChrome.toggleBtn.getAttribute("class").split(" ");
         
-        if(classArray[classArray.length - 1] == simplyPinnedChrome.BUTTON_CLASS_ACTIVE
-           || classArray[classArray.length - 1] == simplyPinnedChrome.BUTTON_CLASS_INACTIVE)
+        if(classArray[classArray.length - 1] == SPChrome.BUTTON_CLASS_ACTIVE ||
+           classArray[classArray.length - 1] == SPChrome.BUTTON_CLASS_INACTIVE)
         {
             classArray.pop();
         }
         
-        classArray.push(show?
-                            simplyPinnedChrome.BUTTON_CLASS_ACTIVE
-                          : simplyPinnedChrome.BUTTON_CLASS_INACTIVE);
+        classArray.push(show? SPChrome.BUTTON_CLASS_ACTIVE
+                            : SPChrome.BUTTON_CLASS_INACTIVE);
         
-        simplyPinnedChrome.toggleBtn.setAttribute("class", classArray.join(" "));
+        SPChrome.toggleBtn.setAttribute("class", classArray.join(" "));
         
         //UPDATE VISIBLE FLAG
-        simplyPinnedChrome.visibleFlag = show;
+        SPChrome.visibleFlag = show;
     },
     
+    /**
+     * Toggles visibility of all toolbars
+     */
     toggleVisibility : function()
     {
         if(gBrowser.selectedTab.pinned)
         {
-            simplyPinnedChrome.setVisibilityOfAllToolbars(!simplyPinnedChrome.visibleFlag);
+            SPChrome.setVisibilityOfAllToolbars(!SPChrome.visibleFlag);
         }
     }
 }
 
-window.addEventListener("load", simplyPinnedChrome.init, false);
+window.addEventListener("load", SPChrome.init, false);

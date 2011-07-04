@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://simplypinned/skin/options.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://simplypinned/locale/options.dtd">
 <prefwindow id="simplypinned-preferences"
-    title="&prefwindow.title;"
-    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    title="&simplypinned-preferences.title;"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    ondialogaccept="SPOptions.onAccept();">
     <script type="application/x-javascript"
         src="chrome://simplypinned/content/options.js" />
-    <prefpane id="optionsPane">
+    <prefpane id="simplypinned-options-pane">
         <preferences>
-            <preference type="bool" id="boolpref_toolbar-menubar"
+            <preference id="boolpref_toolbar-menubar" type="bool" 
                 name="extensions.simplypinned.bool_toolbar-menubar" />
-            <preference type="bool" id="boolpref_nav-bar"
+            <preference id="boolpref_nav-bar" type="bool" 
                 name="extensions.simplypinned.bool_nav-bar" />
-            <preference type="bool" id="boolpref_PersonalToolbar"
+            <preference id="boolpref_PersonalToolbar" type="bool" 
                 name="extensions.simplypinned.bool_PersonalToolbar" />
-            <preference type="bool" id="boolpref_addon-bar"
+            <preference id="boolpref_addon-bar" type="bool" 
                 name="extensions.simplypinned.bool_addon-bar" />
-            <preference type="bool" id="boolpref_otherToolbars"
+            <preference id="boolpref_otherToolbars" type="bool" 
                 name="extensions.simplypinned.bool_otherToolbars" />
+            <preference id="charpref_simplypinned-toggle-key" type="string" 
+                name="extensions.simplypinned.char_simplypinned-toggle-key" />
         </preferences>
-        <description id="descPrefs">&prefs.desc;</description>
-        <checkbox id="chk_toolbar-menubar" label="&chk_toolbar-menubar.label;"
-            preference="boolpref_toolbar-menubar"/>
-        <checkbox id="chk_nav-bar" label="&chk_nav-bar.label;"
-            preference="boolpref_nav-bar"/>
-        <checkbox id="chk_PersonalToolbar" label="&chk_PersonalToolbar.label;"
-            preference="boolpref_PersonalToolbar"/>
-        <checkbox id="chk_addon-bar" label="&chk_addon-bar.label;"
-            preference="boolpref_addon-bar"/>
-        <checkbox id="chk_otherToolbars" label="&chk_otherToolbars.label;"
-            preference="boolpref_otherToolbars"/>
+        <groupbox id="simplypinned-grp-enable-toolbars">
+            <caption id="simplypinned-enable-toolbars-caption"
+                label="&simplypinned-enable-toolbars-caption.label;" />
+            <checkbox id="chk_toolbar-menubar"
+                label="&chk_toolbar-menubar.label;"
+                preference="boolpref_toolbar-menubar"/>
+            <checkbox id="chk_nav-bar"
+                label="&chk_nav-bar.label;"
+                preference="boolpref_nav-bar"/>
+            <checkbox id="chk_PersonalToolbar"
+                label="&chk_PersonalToolbar.label;"
+                preference="boolpref_PersonalToolbar"/>
+            <checkbox id="chk_addon-bar"
+                label="&chk_addon-bar.label;"
+                preference="boolpref_addon-bar"/>
+            <checkbox id="chk_otherToolbars"
+                label="&chk_otherToolbars.label;"
+                preference="boolpref_otherToolbars"/>
+        </groupbox>
+        <groupbox id="simplypinned-grp-hotkeys">
+            <caption id="simplypinned-toggle-hotkey-caption"
+                label="&simplypinned-toggle-hotkey-caption.label;" />
+            <textbox id="simplypinned-txt-toggle-hotkey"
+                preference="charpref_simplypinned-toggle-key"
+                tooltiptext="&simplypinned-toggle-hotkey-description.content;"
+                onfocus="SPOptions.newHotkey(event);"
+                onkeydown="SPOptions.detectKey(event);" />
+        </groupbox>
     </prefpane>
 </prefwindow>

@@ -1,7 +1,12 @@
-<!ENTITY prefwindow.title           "Simply Pinned Preferences">
-<!ENTITY prefs.desc                 "Hide the following for pinned tabs:">
+<!ENTITY simplypinned-preferences.title "Simply Pinned Preferences">
+<!ENTITY simplypinned-enable-toolbars-caption.label
+    "Hide the following for pinned tabs:">
 <!ENTITY chk_toolbar-menubar.label  "Menu Bar">
 <!ENTITY chk_nav-bar.label          "Navigation Toolbar">
 <!ENTITY chk_PersonalToolbar.label  "Bookmarks Toolbar">
 <!ENTITY chk_addon-bar.label        "Add-on Bar">
 <!ENTITY chk_otherToolbars.label    "Other Toolbars:">
+<!ENTITY simplypinned-toggle-hotkey-caption.label
+    "Hotkey to toggle toolbars:">
+<!ENTITY simplypinned-toggle-hotkey-description.content
+    "Note: If you choose a hotkey that already exists, this functionality might not work properly.">

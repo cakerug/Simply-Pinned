@@ -54,15 +54,19 @@ let SPOptions =
     {
         var indexOfItem = someArray.indexOf(item);
         if(indexOfItem == -1) //not found
-        {
             someArray.unshift(item);
-        }
         else
             someArray.splice(indexOfItem, 1);
     },
     
     detectKey : function(event)
     {
+        //TODO: change how this works so that you can press two things at once
+        //like how standard hotkeys work
+        //alternatively, you can have 3 checkboxes and an input field
+        
+        //TODO: make it so that it appears control shift alt (in that order)
+        
         var currentValArray = event.target.value.split(" + ");
         
         if(event.altKey)
@@ -84,18 +88,18 @@ let SPOptions =
     
     onAccept : function()
     {
-        var hotkeyArray = document
-            .getElementById("simplypinned-txt-toggle-hotkey").value.split(" + ");
+        var strBundle = document.getElementById("simplypinned-options-bundle");
         
-        //TODO: use properties file for this or figure out how to access strings from dtds
-        //TODO: make the code below more efficient
+        var hotkeyArray = document
+            .getElementById("simplypinned-txt-toggle-key").value.split(" + ");
+        
         if(hotkeyArray.length == 0 || hotkeyArray.length == 1 ||
            hotkeyArray[hotkeyArray.length - 1] == "")
         {
             window.openDialog("chrome://simplypinned/content/generic-msg.xul",
                 "invalidHotkeyWindow",
                 "chrome,dialog,centerscreen,modal,resizable=no",
-                "You have entered an invalid hotkey.");
+                strBundle.getString("invalidHotkey"));
             
             return false;
         }
@@ -105,7 +109,7 @@ let SPOptions =
             window.openDialog("chrome://simplypinned/content/generic-msg.xul",
                 "reqRestartWindow",
                 "chrome,dialog,centerscreen,modal,resizable=no",
-                "You must restart Firefox for new hotkey to apply.");
+                strBundle.getString("restartMsg"));
             
             return true;
         }

@@ -179,19 +179,19 @@ let SPChrome =
     },
     
     /**
-     * Sets the visibility of toolbar with id passed in
-     * @param {XULElement} toolbar The toolbar you want shown/hidden
+     * Sets the visibility of element with id passed in
+     * @param {XULElement} element The toolbar you want shown/hidden
      * @param {Boolean} enabled If changing the visibility is enabled for this
      *  element, it will be hidden/shown based on the show value passed in
      * @param {Boolean} isVisible If true, the element passed in is shown.
      *  If false, the element passed in is hidden.
      */
-    setToolbarVisibilityIfEnabled : function(toolbar, enabled, isVisible)
+    setElementVisibilityIfEnabled : function(element, enabled, isVisible)
     {
         if(enabled)
-            toolbar.style.display = (isVisible? "inherit" : "none");
+            element.style.display = (isVisible? "inherit" : "none");
         else
-            toolbar.style.display = "inherit";
+            element.style.display = "inherit";
     },
     
     /**
@@ -207,7 +207,7 @@ let SPChrome =
         (
             function(aDefaultElemId)
             {
-                SPChrome.setToolbarVisibilityIfEnabled(
+                SPChrome.setElementVisibilityIfEnabled(
                     document.getElementById(aDefaultElemId),
                     SPChrome.PREFS.getBoolPref("bool_" + aDefaultElemId),
                     show);
@@ -220,7 +220,7 @@ let SPChrome =
         (
             function(anOtherToolbar)
             {
-                SPChrome.setToolbarVisibilityIfEnabled(
+                SPChrome.setElementVisibilityIfEnabled(
                     anOtherToolbar,
                     SPChrome.PREFS.getBoolPref("bool_otherToolbars"),
                     show);

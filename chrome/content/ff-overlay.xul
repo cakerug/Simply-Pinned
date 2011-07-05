@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://simplypinned/skin/ff-overlay.css" type="text/css"?>
+<?xml-stylesheet type="text/css"
+    href="chrome://simplypinned/skin/ff-overlay.css"?>
 <!DOCTYPE overlay SYSTEM "chrome://simplypinned/locale/ff-overlay.dtd">
 <overlay id="simplypinned-browser-overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">

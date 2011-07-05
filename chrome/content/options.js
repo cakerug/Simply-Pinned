@@ -38,87 +38,48 @@ let SPOptions =
             );
         }
     },
-
+    
     newHotkey : function(event)
     {
-        //TODO: add a button that triggers this as well?
         event.target.value = "";
+        SPOptions.restartReq = true;
+    },
+    
+    /**
+     * If an item is in an array, it will be removed. If it isn't, it is added.
+     * @param {Array} someArray The array to add or remove the item from.
+     * @param {any} item The item to add or remove to the array.
+     */
+    toggleItemInArray : function(someArray, item)
+    {
+        var indexOfItem = someArray.indexOf(item);
+        if(indexOfItem == -1) //not found
+        {
+            someArray.unshift(item);
+        }
+        else
+            someArray.splice(indexOfItem, 1);
     },
     
     detectKey : function(event)
     {
-        //TODO: make backspace work (deletes one key at a time (between +s))
-        //starting at where the cursor is? Or at the end?
-        //alternatively, make a save reset button..? or something along those lines
-        
-        //TODO: probably a way to make the code below more efficient
-        
         var currentValArray = event.target.value.split(" + ");
         
-        if(currentValArray[currentValArray.length - 1] == "")
-        {
-            if(event.altKey)
-            {
-                var indexOfKey = currentValArray.indexOf("alt");
-                if(indexOfKey == -1)
-                    event.target.value += "alt + ";
-                else
-                {
-                    currentValArray.splice(indexOfKey, 1);
-                    event.target.value = currentValArray.join(" + ");
-                }
-            }
-            else if(event.ctrlKey)
-            {
-                var indexOfKey = currentValArray.indexOf("control");
-                if(indexOfKey == -1)
-                    event.target.value += "control + ";
-                else
-                {
-                    currentValArray.splice(indexOfKey, 1);
-                    event.target.value = currentValArray.join(" + ");
-                }
-            }
-            else if(event.shiftKey)
-            {
-                var indexOfKey = currentValArray.indexOf("shift");
-                if(indexOfKey == -1)
-                    event.target.value += "shift + ";
-                else
-                {
-                    currentValArray.splice(indexOfKey, 1);
-                    event.target.value = currentValArray.join(" + ");
-                }
-            }
-            else if(event.keyCode >= 40 && event.keyCode <= 90)
-            {
-                if(event.target.value == "")
-                {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-            }
-            else
-            {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-        }
+        if(event.altKey)
+            SPOptions.toggleItemInArray(currentValArray, "alt");
+        else if(event.ctrlKey)
+            SPOptions.toggleItemInArray(currentValArray, "control");
+        else if(event.shiftKey)
+            SPOptions.toggleItemInArray(currentValArray, "shift");
+        else if(event.keyCode >= 40 && event.keyCode <= 90)
+            currentValArray[currentValArray.length - 1] = "";
         else
         {
-            if(event.keyCode >= 40 && event.keyCode <= 90)
-            {
-                currentValArray[currentValArray.length - 1] = "";
-                event.target.value = currentValArray.join(" + ");
-            }
-            else
-            {
-                event.preventDefault();
-                event.stopPropagation();
-            }
+            event.preventDefault();
+            event.stopPropagation();
         }
         
-        SPOptions.restartReq = true;
+        event.target.value = currentValArray.join(" + ");
     },
     
     onAccept : function()
@@ -126,21 +87,30 @@ let SPOptions =
         var hotkeyArray = document
             .getElementById("simplypinned-txt-toggle-hotkey").value.split(" + ");
         
-        if(hotkeyArray.length == 0 ||
-                hotkeyArray[hotkeyArray.length - 1] == "")
+        //TODO: use properties file for this or figure out how to access strings from dtds
+        //TODO: make the code below more efficient
+        if(hotkeyArray.length == 0 || hotkeyArray.length == 1 ||
+           hotkeyArray[hotkeyArray.length - 1] == "")
         {
             window.openDialog("chrome://simplypinned/content/generic-msg.xul",
                 "invalidHotkeyWindow",
                 "chrome,dialog,centerscreen,modal,resizable=no",
-                "You have entered an invalid hotkey. The old hotkey will still apply.");
+                "You have entered an invalid hotkey.");
+            
+            return false;
         }
         else if(SPOptions.restartReq)
         {
+            //TODO: add restart now and restart later buttons to dialog.....
             window.openDialog("chrome://simplypinned/content/generic-msg.xul",
                 "reqRestartWindow",
                 "chrome,dialog,centerscreen,modal,resizable=no",
                 "You must restart Firefox for new hotkey to apply.");
+            
+            return true;
         }
+        
+        return true;
     }
 }
 

@@ -113,7 +113,8 @@ let SPChrome =
         SPChrome.toggleBtn =
             document.getElementById("simplypinned-toggle-button");
             
-        //INITIALIZING VISIBILITY OF TOOLBARS, TOGGLEBUTTON, AND TOGGLEKEY
+        //INITIALIZING VISIBILITY OF TOOLBARS
+        //(after page loads so that you can check if it's pinned or not)
         document.getElementById("appcontent")
             .addEventListener("DOMContentLoaded",
                               SPChrome.onPageLoad,
@@ -179,10 +180,10 @@ let SPChrome =
     
     /**
      * Sets the visibility of toolbar with id passed in
-     * @param XULElement toolbar The toolbar you want shown/hidden
-     * @param Boolean enabled If changing the visibility is enabled for this
+     * @param {XULElement} toolbar The toolbar you want shown/hidden
+     * @param {Boolean} enabled If changing the visibility is enabled for this
      *  element, it will be hidden/shown based on the show value passed in
-     * @param Boolean isVisible If true, the element passed in is shown.
+     * @param {Boolean} isVisible If true, the element passed in is shown.
      *  If false, the element passed in is hidden.
      */
     setToolbarVisibilityIfEnabled : function(toolbar, enabled, isVisible)
@@ -196,7 +197,7 @@ let SPChrome =
     /**
      * Sets the visibility of elements belonging to the DEFAULT_ELEMENT_IDS
      *  and otherToolbarElems arrays
-     * @param Boolean show True shows the toolbars, false hides.
+     * @param {Boolean} show True shows the toolbars, false hides.
      *  of elements to be hidden/shown
      */
     setVisibilityOfAllToolbars : function(show)

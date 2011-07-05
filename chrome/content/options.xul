@@ -5,7 +5,7 @@
 <prefwindow id="simplypinned-preferences"
     title="&simplypinned-preferences.title;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    ondialogaccept="SPOptions.onAccept();">
+    ondialogaccept="return SPOptions.onAccept();">
     <script type="application/x-javascript"
         src="chrome://simplypinned/content/options.js" />
     <prefpane id="simplypinned-options-pane">

@@ -2,7 +2,7 @@ let SPGenericMsg =
 {
     init : function()
     {
-        document.getElementById("simplypinned-generic-msg-label").value =
-            window.arguments[0];
+        var msg = window.arguments[0];
+        document.getElementById("simplypinned-generic-msg-label").value = msg;
     }
 }

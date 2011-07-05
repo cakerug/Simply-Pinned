@@ -9,7 +9,7 @@ let SPOptions =
     //  --externalToolbars? customToolbarCount toolbarset?
 
     restartReq : false,
-    
+        
     init : function()
     {
         //GRABBING OTHER TOOLBARS ARRAY FROM BROWSER WINDOW
@@ -106,10 +106,9 @@ let SPOptions =
         else if(SPOptions.restartReq)
         {
             //TODO: add restart now and restart later buttons to dialog.....
-            window.openDialog("chrome://simplypinned/content/generic-msg.xul",
+            window.openDialog("chrome://simplypinned/content/restart-msg.xul",
                 "reqRestartWindow",
-                "chrome,dialog,centerscreen,modal,resizable=no",
-                strBundle.getString("restartMsg"));
+                "chrome,dialog,centerscreen,modal,resizable=no");
             
             return true;
         }

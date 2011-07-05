@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://simplypinned/locale/msg-text.dtd">
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	id="simplypinned-restart-msg"
+        title="&simplypinned-generic.title;"
+        buttons="extra1,extra2"
+        buttonlabelextra1="&simplypinned-restart-msg.buttonlabelextra1;"
+        buttonlabelextra2="&simplypinned-restart-msg.buttonlabelextra2;"
+        ondialogextra1="close();"
+        ondialogextra2="SPRestart.restartFirefox();">
+    <script type="application/x-javascript"
+        src="chrome://simplypinned/content/restart-msg.js" />
+    <label id="simplypinned-restart-msg-label"
+        value="&simplypinned-restart-msg-label.label;" />
+</dialog>

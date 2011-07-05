@@ -8,7 +8,7 @@
     ondialogaccept="return SPOptions.onAccept();">
     <stringbundleset id="simplypinned-options-bundleset"> 
         <stringbundle id="simplypinned-options-bundle" 
-            src="chrome://simplypinned/locale/options.properties"/>
+            src="chrome://simplypinned/locale/msg-text.properties"/>
     </stringbundleset>
     <script type="application/x-javascript"
         src="chrome://simplypinned/content/options.js" />

@@ -96,6 +96,8 @@ let SPOptions =
         if(hotkeyArray.length == 0 || hotkeyArray.length == 1 ||
            hotkeyArray[hotkeyArray.length - 1] == "")
         {
+            //TODO: instead of a popup, make the box highlighted red and a
+            //message appear near the input box
             window.openDialog("chrome://simplypinned/content/generic-msg.xul",
                 "invalidHotkeyWindow",
                 "chrome,dialog,centerscreen,modal,resizable=no",
@@ -105,8 +107,7 @@ let SPOptions =
         }
         else if(SPOptions.restartReq)
         {
-            //TODO: add restart now and restart later buttons to dialog.....
-            window.openDialog("chrome://simplypinned/content/restart-msg.xul",
+            window.open("chrome://simplypinned/content/restart-msg.xul",
                 "reqRestartWindow",
                 "chrome,dialog,centerscreen,modal,resizable=no");
             

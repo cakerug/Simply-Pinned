@@ -1,7 +1,5 @@
 let SPRestart =
 {
-    //TODO: align buttons on the right
-    
     restartFirefox : function()
     {
         var nsIAppStartup = Components.interfaces.nsIAppStartup;

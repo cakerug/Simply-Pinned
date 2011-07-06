@@ -1,5 +1,5 @@
 <!ENTITY simplypinned-generic.title "Simply Pinned">
-<!ENTITY simplypinned-restart-msg-label.label
+<!ENTITY simplypinned-restart-msg-label.value
     "You must restart Firefox for new hotkey to apply.">
-<!ENTITY simplypinned-restart-msg.buttonlabelextra1 "Restart Later">
-<!ENTITY simplypinned-restart-msg.buttonlabelextra2 "Restart Now">
+<!ENTITY simplypinned-restart-msg-restart-now.label "Restart Later">
+<!ENTITY simplypinned-restart-msg-restart-later.label "Restart Now">

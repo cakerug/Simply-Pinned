@@ -15,6 +15,7 @@
             label="&simplypinned-toggle-button.label;"
             tooltiptext="&simplypinned-toggle-button.tooltiptext;"
             oncommand="SPChrome.toggleVisibility();"
+            style="display:none;"
             class="toolbarbutton-1 chromeclass-toolbar-additional"/>
     </toolbarpalette>
 </overlay>

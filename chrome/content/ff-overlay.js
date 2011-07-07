@@ -23,7 +23,6 @@ let SPChrome =
 
     //ELEMENT REFERENCES
     toggleBtn : new Object(),
-    toggleKey : new Object(),
 
     //TOOLBARS THAT ARE ALL CONTROLLED BY A SINGLE PREFERENCE
     //& ARE POPULATED BY TOOLBARS ADDED BY OTHER EXTENSIONS

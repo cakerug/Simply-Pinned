@@ -9,7 +9,7 @@ let SPOptions =
     //  --externalToolbars? customToolbarCount toolbarset?
 
     restartReq : false,
-        
+    
     init : function()
     {
         //GRABBING OTHER TOOLBARS ARRAY FROM BROWSER WINDOW

@@ -1,6 +1,10 @@
 let SPChrome =
 {
-    //TODO: protection to tabs against closing
+    //TODO: make new windows have pinned tabs in them
+    
+    //TODO: add protection to pinned tabs against closing
+    //(with hotkeys? altogether?)
+    //TODO: systematic id, class, etc labelling
 
     PREFS : Components.classes["@mozilla.org/preferences-service;1"]
             .getService(Components.interfaces.nsIPrefService)
@@ -52,7 +56,7 @@ let SPChrome =
         catch(e){}
         finally
         {
-            if (firstrun)
+            if(firstrun)
             {
                 SPChrome.PREFS.setBoolPref("firstrun", false);
                 SPChrome.PREFS.setCharPref("version", current);
@@ -63,16 +67,17 @@ let SPChrome =
                 var tabBar  = document.getElementById("TabsToolbar");
                 var curSet  = tabBar.currentSet.split(",");
               
-                if (curSet.indexOf(buttonToAdd) == -1)
+                if(curSet.indexOf(buttonToAdd) == -1)
                 {
                     var pos = curSet.indexOf(insertAfterId) + 1 ||
                               curSet.length;
-                    var set = curSet.slice(0, pos)
-                                .concat(buttonToAdd).concat(curSet.slice(pos));
-                
+                    var set = curSet.slice(0, pos).concat(buttonToAdd)
+                        .concat(curSet.slice(pos));
+                        
                     tabBar.setAttribute("currentset", set.join(","));
                     tabBar.currentSet = set.join(",");
                     document.persist(navBar.id, "currentset");
+                    
                     try
                     {
                         BrowserToolboxCustomizeDone(true);
@@ -82,7 +87,7 @@ let SPChrome =
             }
             
             //this section does not get loaded if its a first run
-            if (ver != current && !firstrun)
+            if(ver != current && !firstrun)
             {
                 SPChrome.PREFS.setCharPref("version", current);
                 //if version is different here => upgrade
@@ -100,7 +105,7 @@ let SPChrome =
             (
                 function(elemId)
                 {
-                    return elemId == aToolbar.id
+                    return elemId == aToolbar.id;
                 },
                 this
             );
@@ -115,10 +120,10 @@ let SPChrome =
             
         //INITIALIZING VISIBILITY OF TOOLBARS
         //(after page loads so that you can check if it's pinned or not)
+        
+        //TODO: see if this works when i move it outside the object
         document.getElementById("appcontent")
-            .addEventListener("DOMContentLoaded",
-                              SPChrome.onPageLoad,
-                              true);
+            .addEventListener("DOMContentLoaded", SPChrome.onPageLoad, true);
         
         //CHANGE TOGGLE HOTKEY
         var hotkeyStr = SPChrome.PREFS
@@ -251,14 +256,12 @@ let SPChrome =
     },
     
     /**
-     * Toggles visibility of all toolbars
+     * Toggles visibility of all toolbars but only if the current tab is pinned
      */
     toggleVisibility : function()
     {
         if(gBrowser.selectedTab.pinned)
-        {
             SPChrome.setVisibilityOfAllToolbars(!SPChrome.visibleFlag);
-        }
     }
 }
 

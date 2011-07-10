@@ -1,10 +1,5 @@
 let SPChrome =
 {
-    //2 TODO: FEATURE make new windows have pinned tabs in them
-    
-    //1 TODO: FEATURE add protection to pinned tabs against closing
-    //(with hotkeys? altogether?)
-    
     /**
      * Preference branch for this extension.
      * @constant

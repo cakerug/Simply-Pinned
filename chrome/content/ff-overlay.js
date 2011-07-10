@@ -1,10 +1,10 @@
 let SPChrome =
 {
-    //TODO: make new windows have pinned tabs in them
+    //TODO: FEATURE make new windows have pinned tabs in them
     
-    //TODO: add protection to pinned tabs against closing
+    //TODO: FEATURE add protection to pinned tabs against closing
     //(with hotkeys? altogether?)
-    //TODO: systematic id, class, etc labelling
+    //TODO: MAINTENANCE systematic id, class, etc labelling
 
     PREFS : Components.classes["@mozilla.org/preferences-service;1"]
             .getService(Components.interfaces.nsIPrefService)
@@ -119,19 +119,22 @@ let SPChrome =
             
         //INITIALIZING VISIBILITY OF TOOLBARS
         //(after page loads so that you can check if it's pinned or not)
-        
-        //TODO: see if this works when i move it outside the object
         document.getElementById("appcontent")
             .addEventListener("DOMContentLoaded", SPChrome.onPageLoad, true);
         
         //CHANGE TOGGLE HOTKEY
-        var hotkeyStr = SPChrome.PREFS
-            .getCharPref("char_simplypinned-toggle-key");
-        var modifiersArray = hotkeyStr.toLowerCase().split(" + ");
-        var keyStr = modifiersArray.pop();
+        var ctrlMod = SPChrome.PREFS.getBoolPref("bool_modifier-control");
+        var altMod = SPChrome.PREFS.getBoolPref("bool_modifier-alt");
+        var shiftMod = SPChrome.PREFS.getBoolPref("bool_modifier-shift");
+        var keyStr = SPChrome.PREFS.getCharPref("char_simplypinned-toggle-key");
+        
+        var modifiersArray = new Array();
+        if(ctrlMod) modifiersArray.push("control");
+        if(altMod) modifiersArray.push("alt");
+        if(shiftMod) modifiersArray.push("shift");
         
         document.getElementById("simplypinned-toggle-key")
-            .setAttribute("modifiers", modifiersArray.join(" "));
+            .setAttribute("modifiers", modifiersArray.join(","));
             
         document.getElementById("simplypinned-toggle-key")
             .setAttribute("key", keyStr);
@@ -177,7 +180,7 @@ let SPChrome =
     onPageLoad : function()
     {
         SPChrome.setVisibilityOfAllToolbars(!gBrowser.selectedTab.pinned);
-            
+        
         document.getElementById("appcontent")
             .removeEventListener("load", SPChrome.onPageLoad, false);
     },

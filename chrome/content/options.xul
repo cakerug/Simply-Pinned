@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://simplypinned/skin/options.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://simplypinned/locale/options.dtd">
 <prefwindow id="simplypinned-preferences"
     title="&simplypinned-preferences.title;"
@@ -13,6 +14,7 @@
         src="chrome://simplypinned/content/options.js" />
     <prefpane id="simplypinned-options-pane">
         <preferences>
+            <!-- Preferences for toolbars to be hidden for pinned tabs -->
             <preference id="boolpref_toolbar-menubar" type="bool" 
                 name="extensions.simplypinned.bool_toolbar-menubar" />
             <preference id="boolpref_nav-bar" type="bool" 
@@ -23,6 +25,13 @@
                 name="extensions.simplypinned.bool_addon-bar" />
             <preference id="boolpref_otherToolbars" type="bool" 
                 name="extensions.simplypinned.bool_otherToolbars" />
+            <!-- Preferences for hotkey to toggle -->
+            <preference id="boolpref_modifier-control" type="bool"
+                name="extensions.simplypinned.bool_modifier-control" />
+            <preference id="boolpref_modifier-alt" type="bool"
+                name="extensions.simplypinned.bool_modifier-alt" />
+            <preference id="boolpref_modifier-shift" type="bool"
+                name="extensions.simplypinned.bool_modifier-shift" />
             <preference id="charpref_simplypinned-toggle-key" type="string" 
                 name="extensions.simplypinned.char_simplypinned-toggle-key" />
         </preferences>
@@ -45,14 +54,26 @@
                 label="&chk_otherToolbars.label;"
                 preference="boolpref_otherToolbars"/>
         </groupbox>
-        <groupbox id="simplypinned-grp-hotkeys">
+        <groupbox id="simplypinned-grp-hotkeys" height="100%">
             <caption id="simplypinned-toggle-hotkey-caption"
                 label="&simplypinned-toggle-hotkey-caption.label;" />
-            <textbox id="simplypinned-txt-toggle-key"
-                preference="charpref_simplypinned-toggle-key"
-                tooltiptext="&simplypinned-toggle-hotkey-description.content;"
-                onfocus="SPOptions.newHotkey(event);"
-                onkeydown="SPOptions.detectKey(event);" />
+            <hbox id="simplypinned-hbox-hotkeys">
+                <checkbox id="chk_modifier-control"
+                    label="Ctrl"
+                    preference="boolpref_modifier-control" />
+                <checkbox id="chk_modifier-alt"
+                    label="Alt"
+                    preference="boolpref_modifier-alt" />
+                <checkbox id="chk_modifier-shift"
+                    label="Shift"
+                    preference="boolpref_modifier-shift" />
+                <textbox id="simplypinned-txt-toggle-key"
+                    preference="charpref_simplypinned-toggle-key"
+                    maxlength="1" />
+            </hbox>
+            <label id="simplypinned-txt-toggle-key-note">
+                &simplypinned-txt-toggle-key-note.content;
+            </label>
         </groupbox>
     </prefpane>
 </prefwindow>

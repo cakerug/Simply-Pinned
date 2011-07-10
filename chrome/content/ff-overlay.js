@@ -1,34 +1,50 @@
 let SPChrome =
 {
-    //TODO: FEATURE make new windows have pinned tabs in them
+    //2 TODO: FEATURE make new windows have pinned tabs in them
     
-    //TODO: FEATURE add protection to pinned tabs against closing
+    //1 TODO: FEATURE add protection to pinned tabs against closing
     //(with hotkeys? altogether?)
-    //TODO: MAINTENANCE systematic id, class, etc labelling
-
+    
+    /**
+     * Preference branch for this extension.
+     * @constant
+     */
     PREFS : Components.classes["@mozilla.org/preferences-service;1"]
             .getService(Components.interfaces.nsIPrefService)
             .getBranch("extensions.simplypinned."),
     
-    //ELEMENTS THAT ARE CONTROLLED BY INDIVIDUAL PREFERENCES
-    //& ARE PART OF THE DEFAULT FIREFOX
+    /**
+     * Class names for toggle button
+     * @constant
+     */
+    BUTTON_CLASS_ACTIVE   : "simplypinned-active-button",
+    BUTTON_CLASS_INACTIVE : "simplypinned-inactive-button",
+    
+    /**
+     * The toggle button element. Instantiated in init function.
+     */
+    toggleBtn : new Object(),
+    
+    /**
+     * @constant
+     * @default ids of Elements that are controlled by individual preferences &
+     *  are default Firefox toolbars
+     */
     DEFAULT_ELEMENT_IDS : new Array("toolbar-menubar",
                                     "nav-bar",
                                     "PersonalToolbar",
                                     "addon-bar"),
-
-    //CLASS NAMES OF TOGGLE BUTTON
-    BUTTON_CLASS_ACTIVE   : "simplypinned-active-button",
-    BUTTON_CLASS_INACTIVE : "simplypinned-inactive-button",
-
-    //ELEMENT REFERENCES
-    toggleBtn : new Object(),
-
-    //TOOLBARS THAT ARE ALL CONTROLLED BY A SINGLE PREFERENCE
-    //& ARE POPULATED BY TOOLBARS ADDED BY OTHER EXTENSIONS
+    
+    /**
+     * Toolbars that are all controlled by a single preference and that aren't
+     *  listed in the DEFAULT_ELEMENT_IDS list. Instantiated in init function.
+     *  That is, toolbar elements that are custom or added by other extensions.
+     */
     otherToolbarElems : new Array(),
     
-    //KEEPS TRACK OF IF THE TOOLBARS ARE VISIBLE OR NOT
+    /**
+     * Keeps track of if the toolbars are visible or not.
+     */
     visibleFlag : true,
     
     init : function()
@@ -96,22 +112,8 @@ let SPChrome =
         //POPULATING otherToolbars ARRAY
         //- only add elements that have toolbarnames,
         //  and that aren't already listed (defaultElements)
-        for(var i = 0; i < document.getElementsByTagName("toolbar").length; i++)
-        {
-            var aToolbar = document.getElementsByTagName("toolbar")[i];
-            
-            var isDefaultElem = SPChrome.DEFAULT_ELEMENT_IDS.some
-            (
-                function(elemId)
-                {
-                    return elemId == aToolbar.id;
-                },
-                this
-            );
-            
-            if(aToolbar.hasAttribute("toolbarname") && !isDefaultElem)
-                SPChrome.otherToolbarElems.push(aToolbar);
-        }
+        SPChrome.otherToolbarElems =
+            SPChrome.generateOtherToolbarsArray(SPChrome.DEFAULT_ELEMENT_IDS);
         
         //INITIALIZING ELEMENT REFERENCES
         SPChrome.toggleBtn =
@@ -183,6 +185,45 @@ let SPChrome =
         
         document.getElementById("appcontent")
             .removeEventListener("load", SPChrome.onPageLoad, false);
+    },
+    
+    newCustomToolbarCreated : function()
+    {
+        //repopulate the other toolbar elements
+        SPChrome.otherToolbarElems =
+            SPChrome.generateOtherToolbarsArray(SPChrome.DEFAULT_ELEMENT_IDS);
+        
+        //hides the new toolbar if the current tab is pinned
+        SPChrome.setVisibilityOfAllToolbars(!gBrowser.selectedTab.pinned);
+    },
+    
+    /**
+     * Generates an array of toolbars not listed in an array passed in.
+     * @param {Array} excludeTheseIds An array of toolbar ids to omit from the
+     *  list to be returned.
+     * @returns {Array} An array of other toolbar XULElements.
+     */
+    generateOtherToolbarsArray : function(excludeTheseIds)
+    {
+        var otherToolbarsArray = new Array();
+        for(var i = 0; i < document.getElementsByTagName("toolbar").length; i++)
+        {
+            var aToolbar = document.getElementsByTagName("toolbar")[i];
+            
+            var isDefaultElem = excludeTheseIds.some
+            (
+                function(elemId)
+                {
+                    return elemId == aToolbar.id;
+                },
+                this
+            );
+            
+            if(aToolbar.hasAttribute("toolbarname") && !isDefaultElem)
+                otherToolbarsArray.push(aToolbar);
+        }
+        
+        return otherToolbarsArray;
     },
     
     /**
@@ -268,3 +309,6 @@ let SPChrome =
 }
 
 window.addEventListener("load", SPChrome.init, false);
+window.addEventListener("aftercustomization",
+                        SPChrome.newCustomToolbarCreated,
+                        false);

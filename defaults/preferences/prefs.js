@@ -9,4 +9,4 @@ pref("extensions.simplypinned.bool_otherToolbars",   true  );
 pref("extensions.simplypinned.bool_modifier-control", true);
 pref("extensions.simplypinned.bool_modifier-alt", true);
 pref("extensions.simplypinned.bool_modifier-shift", true);
-pref("extensions.simplypinned.char_simplypinned-toggle-key", "t");
+pref("extensions.simplypinned.char_simplypinned-toggle-key", "T");

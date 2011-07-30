@@ -271,23 +271,26 @@ let SPChrome =
             this
         );
         
-        //HIDE TOGGLE BUTTON IF NOT PINNED
-        SPChrome.toggleBtn.style.display =
-            gBrowser.selectedTab.pinned? "inherit" : "none";
-            
-        //CHANGE TOGGLE BUTTON IMAGE
-        var classArray = SPChrome.toggleBtn.getAttribute("class").split(" ");
-        
-        if(classArray[classArray.length - 1] == SPChrome.BUTTON_CLASS_ACTIVE ||
-           classArray[classArray.length - 1] == SPChrome.BUTTON_CLASS_INACTIVE)
+        if(SPChrome.toggleBtn != null)
         {
-            classArray.pop();
+            //HIDE TOGGLE BUTTON IF NOT PINNED
+            SPChrome.toggleBtn.style.display =
+                gBrowser.selectedTab.pinned? "inherit" : "none";
+            
+            //CHANGE TOGGLE BUTTON IMAGE
+            var classArray = SPChrome.toggleBtn.getAttribute("class").split(" ");
+        
+            if(classArray[classArray.length - 1] == SPChrome.BUTTON_CLASS_ACTIVE ||
+               classArray[classArray.length - 1] == SPChrome.BUTTON_CLASS_INACTIVE)
+            {
+                classArray.pop();
+            }
+            
+            classArray.push(show? SPChrome.BUTTON_CLASS_ACTIVE
+                                : SPChrome.BUTTON_CLASS_INACTIVE);
+            
+            SPChrome.toggleBtn.setAttribute("class", classArray.join(" "));
         }
-        
-        classArray.push(show? SPChrome.BUTTON_CLASS_ACTIVE
-                            : SPChrome.BUTTON_CLASS_INACTIVE);
-        
-        SPChrome.toggleBtn.setAttribute("class", classArray.join(" "));
         
         //UPDATE VISIBLE FLAG
         SPChrome.visibleFlag = show;

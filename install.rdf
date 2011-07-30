@@ -5,7 +5,7 @@
     <em:id>simplypinned@grace.ku</em:id>
     <em:type>2</em:type>
     <em:name>Simply Pinned</em:name>
-    <em:version>0.1</em:version>
+    <em:version>1.0</em:version>
     <em:creator>Grace Ku</em:creator>
     <em:description>
       Removes unneeded toolbars on pinned tabs.

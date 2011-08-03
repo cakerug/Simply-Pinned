@@ -1,4 +1,4 @@
-let SPRestart =
+let SimplyPinnedRestart =
 {
     restartFirefox : function()
     {

@@ -1,4 +1,4 @@
-let SPOptions =
+let SimplyPinnedOptions =
 {
     /**
      * Variables used for keeping track of original hotkeys used to determine
@@ -16,7 +16,7 @@ let SPOptions =
             .classes["@mozilla.org/appshell/window-mediator;1"]
             .getService(Components.interfaces.nsIWindowMediator)
             .getMostRecentWindow("navigator:browser");
-        var otherToolbars = browserWindow.SPChrome.otherToolbarElems;
+        var otherToolbars = browserWindow.SimplyPinnedMain.otherToolbarElems;
 
         //POPULATING LIST OF OTHER TOOLBARS TO BE DISPLAYED IN OPTIONS PANE
         if(otherToolbars.length == 0)
@@ -38,32 +38,36 @@ let SPOptions =
         }
         
         //STORING ORIGINAL HOTKEY
-        SPOptions.origCtrlMod =
+        SimplyPinnedOptions.origCtrlMod =
             document.getElementById("chk_modifier-control").checked;
-        SPOptions.origAltMod =
+        SimplyPinnedOptions.origAltMod =
             document.getElementById("chk_modifier-alt").checked;
-        SPOptions.origShiftMod =
+        SimplyPinnedOptions.origShiftMod =
             document.getElementById("chk_modifier-shift").checked;
-        SPOptions.origKeyStr =
+        SimplyPinnedOptions.origKeyStr =
             document.getElementById("simplypinned-txt-toggle-key").value;
         
-        window.removeEventListener("load", SPOptions.init, false);
+        window.removeEventListener("load", SimplyPinnedOptions.init, false);
     },
     
     onAccept : function()
     {
         var strBundle = document.getElementById("simplypinned-options-bundle");
         
-        var newCtrlMod = document.getElementById("chk_modifier-control").checked;
-        var newAltMod = document.getElementById("chk_modifier-alt").checked;
-        var newShiftMod = document.getElementById("chk_modifier-shift").checked;
-        var newKeyStr = document.getElementById("simplypinned-txt-toggle-key").value;
+        var newCtrlMod =
+            document.getElementById("chk_modifier-control").checked;
+        var newAltMod =
+            document.getElementById("chk_modifier-alt").checked;
+        var newShiftMod =
+            document.getElementById("chk_modifier-shift").checked;
+        var newKeyStr =
+            document.getElementById("simplypinned-txt-toggle-key").value;
         
         var restartReq =
-            (SPOptions.origCtrlMod  != newCtrlMod ) ||
-            (SPOptions.origAltMod   != newAltMod  ) ||
-            (SPOptions.origShiftMod != newShiftMod) ||
-            (SPOptions.origKeyStr   != newKeyStr  );
+            (SimplyPinnedOptions.origCtrlMod  != newCtrlMod ) ||
+            (SimplyPinnedOptions.origAltMod   != newAltMod  ) ||
+            (SimplyPinnedOptions.origShiftMod != newShiftMod) ||
+            (SimplyPinnedOptions.origKeyStr   != newKeyStr  );
             
         if(newKeyStr == "" || (!newCtrlMod && !newAltMod && !newShiftMod))
         {
@@ -87,4 +91,4 @@ let SPOptions =
     }
 }
 
-window.addEventListener("load", SPOptions.init, false);
+window.addEventListener("load", SimplyPinnedOptions.init, false);

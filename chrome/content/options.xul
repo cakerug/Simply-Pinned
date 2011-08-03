@@ -5,7 +5,7 @@
 <prefwindow id="simplypinned-preferences"
     title="&simplypinned-preferences.title;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    ondialogaccept="return SPOptions.onAccept();">
+    ondialogaccept="return SimplyPinnedOptions.onAccept();">
     <stringbundleset id="simplypinned-options-bundleset"> 
         <stringbundle id="simplypinned-options-bundle" 
             src="chrome://simplypinned/locale/msg-text.properties"/>

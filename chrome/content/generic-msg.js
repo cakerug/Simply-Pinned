@@ -1,4 +1,4 @@
-let SPGenericMsg =
+let SimplyPinnedGenericMsg =
 {
     init : function()
     {

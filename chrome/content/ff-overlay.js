@@ -86,7 +86,7 @@ let SimplyPinnedMain =
                         
                     tabBar.setAttribute("currentset", set.join(","));
                     tabBar.currentSet = set.join(",");
-                    document.persist(navBar.id, "currentset");
+                    document.persist(tabBar.id, "currentset");
                     
                     try
                     {

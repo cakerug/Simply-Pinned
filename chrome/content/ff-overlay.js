@@ -1,6 +1,3 @@
-//TODO: known bug, when you try removing the toolbar button and it is hidden,
-//it doesn't show up... should show up
-
 let SimplyPinnedMain =
 {
     /**
@@ -24,9 +21,9 @@ let SimplyPinnedMain =
      *  are default Firefox toolbars
      */
     DEFAULT_TOOLBAR_IDS : new Array("toolbar-menubar",
-                                 "nav-bar",
-                                 "PersonalToolbar",
-                                 "addon-bar"),
+                                    "nav-bar",
+                                    "PersonalToolbar",
+                                    "addon-bar"),
     
     /**
      * Toolbars that are all controlled by a single preference and that aren't
@@ -182,6 +179,18 @@ let SimplyPinnedMain =
             .removeEventListener("load", SimplyPinnedMain.onPageLoad, false);
     },
     
+    onBeginCustomization : function()
+    {
+        SimplyPinnedMain.setVisibilityOfAllToolbars(true);
+        
+        //override toggle button to always show when in customize view
+        var toggleBtn = document.getElementById("simplypinned-toggle-button");
+        if(toggleBtn != null)
+        {
+            toggleBtn.style.display = "inherit";
+        }
+    },
+    
     onCreateNewCustomToolbar : function()
     {
         //repopulate the other toolbar elements
@@ -243,10 +252,10 @@ let SimplyPinnedMain =
     /**
      * Sets the visibility of elements belonging to the DEFAULT_TOOLBAR_IDS
      *  and otherToolbarElems arrays
-     * @param {Boolean} show True shows the toolbars, false hides.
-     *  of elements to be hidden/shown
+     * @param {Boolean} showToolbars True shows the toolbars & hides the toolbar
+     *  icon, false hides the toolbars but shows the icon.
      */
-    setVisibilityOfAllToolbars : function(show)
+    setVisibilityOfAllToolbars : function(showToolbars)
     {
         //SETTING VISIBILITY OF DEFAULT ELEMENTS
         SimplyPinnedMain.DEFAULT_TOOLBAR_IDS.forEach
@@ -256,7 +265,7 @@ let SimplyPinnedMain =
                 SimplyPinnedMain.setElementVisibilityIfEnabled(
                     document.getElementById(aDefaultElemId),
                     SimplyPinnedMain.PREFS.getBoolPref("bool_" + aDefaultElemId),
-                    show);
+                    showToolbars);
             },
             this
         );
@@ -269,7 +278,7 @@ let SimplyPinnedMain =
                 SimplyPinnedMain.setElementVisibilityIfEnabled(
                     anOtherToolbar,
                     SimplyPinnedMain.PREFS.getBoolPref("bool_otherToolbars"),
-                    show);
+                    showToolbars);
             },
             this
         );
@@ -278,8 +287,7 @@ let SimplyPinnedMain =
         if(toggleBtn != null)
         {
             //HIDE TOGGLE BUTTON IF NOT PINNED
-            toggleBtn.style.display =
-                gBrowser.selectedTab.pinned? "inherit" : "none";
+            toggleBtn.style.display = showToolbars? "none" : "inherit";
             
             //CHANGE TOGGLE BUTTON IMAGE
             var classArray = toggleBtn.getAttribute("class").split(" ");
@@ -292,14 +300,14 @@ let SimplyPinnedMain =
                 classArray.pop();
             }
             
-            classArray.push(show? SimplyPinnedMain.BUTTON_CLASS_ACTIVE
-                                : SimplyPinnedMain.BUTTON_CLASS_INACTIVE);
+            classArray.push(showToolbars? SimplyPinnedMain.BUTTON_CLASS_ACTIVE
+                                        : SimplyPinnedMain.BUTTON_CLASS_INACTIVE);
             
             toggleBtn.setAttribute("class", classArray.join(" "));
         }
         
         //UPDATE VISIBLE FLAG
-        SimplyPinnedMain.visibleFlag = show;
+        SimplyPinnedMain.visibleFlag = showToolbars;
     },
     
     /**
@@ -314,6 +322,9 @@ let SimplyPinnedMain =
 }
 
 window.addEventListener("load", SimplyPinnedMain.init, false);
+window.addEventListener("beforecustomization",
+                        SimplyPinnedMain.onBeginCustomization,
+                        false);
 window.addEventListener("aftercustomization",
                         SimplyPinnedMain.onCreateNewCustomToolbar,
                         false);

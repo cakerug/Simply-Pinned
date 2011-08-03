@@ -1,3 +1,6 @@
+//TODO: known bug, when you try removing the toolbar button and it is hidden,
+//it doesn't show up... should show up
+
 let SimplyPinnedMain =
 {
     /**
@@ -14,11 +17,6 @@ let SimplyPinnedMain =
      */
     BUTTON_CLASS_ACTIVE   : "simplypinned-active-button",
     BUTTON_CLASS_INACTIVE : "simplypinned-inactive-button",
-    
-    /**
-     * The toggle button element. Instantiated in init function.
-     */
-    toggleBtn : new Object(),
     
     /**
      * @constant
@@ -108,10 +106,6 @@ let SimplyPinnedMain =
         SimplyPinnedMain.otherToolbarElems =
             SimplyPinnedMain
                 .generateOtherToolbarsArray(SimplyPinnedMain.DEFAULT_TOOLBAR_IDS);
-        
-        //INITIALIZING ELEMENT REFERENCES
-        SimplyPinnedMain.toggleBtn =
-            document.getElementById("simplypinned-toggle-button");
             
         //INITIALIZING VISIBILITY OF TOOLBARS
         //(after page loads so that you can check if it's pinned or not)
@@ -188,7 +182,7 @@ let SimplyPinnedMain =
             .removeEventListener("load", SimplyPinnedMain.onPageLoad, false);
     },
     
-    newCustomToolbarCreated : function()
+    onCreateNewCustomToolbar : function()
     {
         //repopulate the other toolbar elements
         SimplyPinnedMain.otherToolbarElems =
@@ -280,14 +274,15 @@ let SimplyPinnedMain =
             this
         );
         
-        if(SimplyPinnedMain.toggleBtn != null)
+        var toggleBtn = document.getElementById("simplypinned-toggle-button");
+        if(toggleBtn != null)
         {
             //HIDE TOGGLE BUTTON IF NOT PINNED
-            SimplyPinnedMain.toggleBtn.style.display =
+            toggleBtn.style.display =
                 gBrowser.selectedTab.pinned? "inherit" : "none";
             
             //CHANGE TOGGLE BUTTON IMAGE
-            var classArray = SimplyPinnedMain.toggleBtn.getAttribute("class").split(" ");
+            var classArray = toggleBtn.getAttribute("class").split(" ");
         
             if(classArray[classArray.length - 1]
                    == SimplyPinnedMain.BUTTON_CLASS_ACTIVE ||
@@ -300,8 +295,7 @@ let SimplyPinnedMain =
             classArray.push(show? SimplyPinnedMain.BUTTON_CLASS_ACTIVE
                                 : SimplyPinnedMain.BUTTON_CLASS_INACTIVE);
             
-            SimplyPinnedMain.toggleBtn
-                .setAttribute("class", classArray.join(" "));
+            toggleBtn.setAttribute("class", classArray.join(" "));
         }
         
         //UPDATE VISIBLE FLAG
@@ -321,5 +315,5 @@ let SimplyPinnedMain =
 
 window.addEventListener("load", SimplyPinnedMain.init, false);
 window.addEventListener("aftercustomization",
-                        SimplyPinnedMain.newCustomToolbarCreated,
+                        SimplyPinnedMain.onCreateNewCustomToolbar,
                         false);

@@ -287,7 +287,8 @@ let SimplyPinnedMain =
         if(toggleBtn != null)
         {
             //HIDE TOGGLE BUTTON IF NOT PINNED
-            toggleBtn.style.display = showToolbars? "none" : "inherit";
+            toggleBtn.style.display =
+                gBrowser.selectedTab.pinned ? "inherit" : "none";
             
             //CHANGE TOGGLE BUTTON IMAGE
             var classArray = toggleBtn.getAttribute("class").split(" ");

@@ -6,10 +6,10 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script type="application/x-javascript"
         src="chrome://simplypinned/content/ff-overlay.js" />
-     <keyset>
+    <keyset>
         <key id="simplypinned-toggle-key"
-             oncommand="SimplyPinnedMain.toggleVisibility();"/>
-     </keyset>
+            oncommand="SimplyPinnedMain.toggleVisibility();"/>
+    </keyset>
     <toolbarpalette id="BrowserToolbarPalette">
         <toolbarbutton id="simplypinned-toggle-button"
             label="&simplypinned-toggle-button.label;"

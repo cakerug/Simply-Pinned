@@ -23,6 +23,8 @@
                 name="extensions.simplypinned.bool_PersonalToolbar" />
             <preference id="boolpref_addon-bar" type="bool" 
                 name="extensions.simplypinned.bool_addon-bar" />
+            <preference id="boolpref_verticaltabs-box" type="bool" 
+                name="extensions.simplypinned.bool_verticaltabs-box" />
             <preference id="boolpref_otherToolbars" type="bool" 
                 name="extensions.simplypinned.bool_otherToolbars" />
             <!-- Preferences for hotkey to toggle -->
@@ -50,6 +52,9 @@
             <checkbox id="chk_addon-bar"
                 label="&chk_addon-bar.label;"
                 preference="boolpref_addon-bar"/>
+            <checkbox id="chk_verticaltabs-box"
+                label="&chk_verticaltabs-box.label;"
+                preference="boolpref_verticaltabs-box"/>
             <checkbox id="chk_otherToolbars"
                 label="&chk_otherToolbars.label;"
                 preference="boolpref_otherToolbars"/>

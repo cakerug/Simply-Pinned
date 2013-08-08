@@ -23,7 +23,8 @@ let SimplyPinnedMain =
     DEFAULT_TOOLBAR_IDS : new Array("toolbar-menubar",
                                     "nav-bar",
                                     "PersonalToolbar",
-                                    "addon-bar"),
+                                    "addon-bar",
+                                    "verticaltabs-box"),
     
     /**
      * Toolbars that are all controlled by a single preference and that aren't

@@ -6,6 +6,7 @@
 <!ENTITY chk_nav-bar.label          "Navigation Toolbar">
 <!ENTITY chk_PersonalToolbar.label  "Bookmarks Toolbar">
 <!ENTITY chk_addon-bar.label        "Add-on Bar">
+<!ENTITY chk_verticaltabs-box.label "Vertical Tabs">
 <!ENTITY chk_otherToolbars.label    "Other Toolbars:">
 
 <!ENTITY simplypinned-toggle-hotkey-caption.label

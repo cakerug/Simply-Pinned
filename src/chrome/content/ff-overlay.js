@@ -244,10 +244,12 @@ let SimplyPinnedMain =
      */
     setElementVisibilityIfEnabled : function(element, enabled, isVisible)
     {
-        if(enabled)
-            element.style.display = (isVisible? "inherit" : "none");
-        else
-            element.style.display = "inherit";
+        if(element != null) {
+            if(enabled)
+                element.style.display = (isVisible? "inherit" : "none");
+            else
+                element.style.display = "inherit";
+        }
     },
     
     /**
@@ -263,6 +265,7 @@ let SimplyPinnedMain =
         (
             function(aDefaultElemId)
             {
+
                 SimplyPinnedMain.setElementVisibilityIfEnabled(
                     document.getElementById(aDefaultElemId),
                     SimplyPinnedMain.PREFS.getBoolPref("bool_" + aDefaultElemId),

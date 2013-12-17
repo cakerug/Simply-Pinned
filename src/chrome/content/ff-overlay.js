@@ -139,8 +139,22 @@ let SimplyPinnedMain =
         container.addEventListener("TabSelect",
             function(event)
             {
-                SimplyPinnedMain
-                    .setVisibilityOfAllToolbars(!event.target.pinned);
+                // The addons page doesn't have toolbars showing already so
+                // prevent it from showing toolbars when toggling between a
+                // pinned tab and the addons manager tab. If other pages are
+                // discovered to already have their toolbars hidden, then a
+                // list of these pages should be created and iterated through.
+                if (window.content.location.href == "about:addons") {
+                    SimplyPinnedMain
+                        .setVisibilityOfAllToolbars(
+                            false
+                        );
+                } else {
+                    SimplyPinnedMain
+                        .setVisibilityOfAllToolbars(
+                            !event.target.pinned
+                        );
+                }
             },
             false);
         
